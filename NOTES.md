@@ -16,6 +16,8 @@
     - https://github.com/matin/garth
 - Garmin STL Reference
     - https://developer.garmin.com/connect-iq/api-docs/index.html
+        - `:extendedCode`
+        - `--warn --typecheck 3 --optimization 2pz`
 
 # Thoughts
 
