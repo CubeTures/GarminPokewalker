@@ -145,7 +145,7 @@ def median_pixel_redraw_details(
 
 
 if __name__ == "__main__":
-    output_path = "scripts-custom/recolor-output/"
+    output_path = "scripts/output/recolor/"
     os.makedirs(output_path, exist_ok=True)
 
     sprites = import_sprites()

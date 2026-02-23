@@ -18,7 +18,7 @@ class Sprite:
         nest: str = f"/{nest}" if nest else ""
         mod: str = self.form if self.form != "$" else ""
         mod: str = f"-{mod}" if mod else ""
-        return f"pokemon-gen7x/{root}{nest}/{self.slug}{mod}.png"
+        return f"scripts/pokesprite/pokemon-gen7x/{root}{nest}/{self.slug}{mod}.png"
 
     def get_target(self) -> str:
         f: str = "f" if self.is_female else ""
@@ -31,7 +31,7 @@ class Sprite:
 def import_sprites():
     sprites: list[Sprite] = []
 
-    with open("data/pokemon.json") as file:
+    with open("scripts/pokesprite/data/pokemon.json") as file:
         pokemon: dict[str, Any] = json.load(file)
 
         for data in pokemon.values():

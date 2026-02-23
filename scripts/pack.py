@@ -79,8 +79,8 @@ def create_sheets(
 
 
 if __name__ == "__main__":
-    input_dir: str = "scripts-custom/recolor-output"
-    output_path: str = "scripts-custom/pack-output"
+    input_dir: str = "scripts/output/recolor"
+    output_path: str = "scripts/output/pack"
     os.makedirs(output_path, exist_ok=True)
 
     sprites: List[Sprite] = loader.import_sprites()
