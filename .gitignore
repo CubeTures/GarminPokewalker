@@ -1,4 +1,13 @@
+# IDE
 .vscode/
+
+# Monkey C
 bin/
 
-resources/sprites
+# Scripts
+venv/
+**/__pycache__/
+**/output/
+
+# Volatile
+resources/data

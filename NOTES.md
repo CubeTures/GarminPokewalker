@@ -18,6 +18,10 @@
     - https://developer.garmin.com/connect-iq/api-docs/index.html
         - `:extendedCode`
         - `--warn --typecheck 3 --optimization 2pz`
+- Smogon Sprites
+    - https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png
+    - https://github.com/smogon/pokemon-showdown-client/blob/e263055242b6e35cceb5abbfb07f33c588c8131d/play.pokemonshowdown.com/src/battle-dex.ts#L805
+    - https://github.com/smogon/pokemon-showdown-client/blob/e263055242b6e35cceb5abbfb07f33c588c8131d/play.pokemonshowdown.com/src/battle-dex-data.ts#L151
 
 # Thoughts
 
@@ -28,6 +32,9 @@
 
 - Optimal image compression algorithm
     - (2 bits color, 1 byte length)
+
+- Starter
+    - Audino
 
 # Mechanics
 
@@ -73,7 +80,7 @@
     - Elevation
     - Activity Minutes
         - Based on week
-        - 
+        -
 - Complications
     - Steps
     - Floors climbed
@@ -83,7 +90,6 @@
     - Sleep Score
         - Sleeping heals your pokemon
     - Sleep Consistency
-
 
 - Increased battle prowess
 
@@ -98,38 +104,36 @@
 ## Save Data
 
 ```c
-// 36 bytes
+// 48 bytes; 3 spare bits
 typedef struct {
     // ---------- Identity ----------
-    uint32_t species_id :16;
-    uint32_t nickname   :16;
-
+    uint64_t nickname;
     uint32_t exp;
 
-    uint32_t current_hp :16;
-    uint32_t nature     :5;  // 0–31
-    uint32_t ability    :2;  // 0–3
-    uint32_t gender     :2;  // 0–3
-    uint32_t form       :6;  // 0–63
-    uint32_t spare_id   :1;
+    uint32_t sid     :16;
+    uint32_t nature  :5;
+    uint32_t ability :2;
+    uint32_t gender  :2;
+    uint32_t form    :6;
+    uint32_t shiny   :1;
 
     // ---------- Genetics ----------
-    uint32_t iv_hp    :5;
-    uint32_t iv_atk   :5;
-    uint32_t iv_def   :5;
-    uint32_t iv_spa   :5;
-    uint32_t iv_spd   :5;
-    uint32_t iv_spe   :5;
-    uint32_t spare_iv :2;
+    uint32_t iv_hp      :5;
+    uint32_t iv_atk     :5;
+    uint32_t iv_def     :5;
+    uint32_t iv_spa     :5;
+    uint32_t iv_spd     :5;
+    uint32_t iv_spe     :5;
+    uint32_t spare_iv   :2;
 
-    uint32_t ev_hp    :8;
-    uint32_t ev_atk   :8;
-    uint32_t ev_def   :8;
-    uint32_t ev_spa   :8;
+    uint32_t ev_hp      :8;
+    uint32_t ev_atk     :8;
+    uint32_t ev_def     :8;
+    uint32_t ev_spa     :8;
 
-    uint32_t ev_spd   :8;
-    uint32_t ev_spe   :8;
-    uint32_t pid      :16;
+    uint32_t ev_spd     :8;
+    uint32_t ev_spe     :8;
+    uint32_t current_hp :16;
 
     // ---------- Moveset ----------
     uint32_t move0  :16;
@@ -146,12 +150,20 @@ typedef struct {
     uint32_t pp3    :6;
     uint32_t ppups3 :2;
 
+    // ---------- Battle ----------
+    uint32_t held_item :13;
+    uint32_t status    :3;
+    uint32_t ball      :5;
+    uint32_t type_a    :5;
+    uint32_t type_b    :5;
+    uint32_t spare_btl :1;
+
     // ---------- Misc ----------
     uint32_t friendship :8;
     uint32_t met_year   :12;  // 0–4095
     uint32_t met_month  :4;   // 1–12
     uint32_t met_day    :5;   // 1–31
-    uint32_t spare_misc :3;
+    uint32_t exp_curve  :3;
 } Pokemon;
 ```
 
@@ -177,7 +189,7 @@ typedef struct {
         - battle
         - catch
     - activity // translate activity to in game rewards, check for special events
-        - background 
+        - background
         - steps
         - sleep
         - exercise
