@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 (:background)
-class risumonApp extends Application.AppBase {
+class PokewalkerApp extends Application.AppBase {
     function initialize() {
         AppBase.initialize();
     }
@@ -14,14 +14,14 @@ class risumonApp extends Application.AppBase {
 
     (:typecheck(disableBackgroundCheck))
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [new risumonView(), new risumonDelegate()];
+        return [new PokewalkerView(), new PokewalkerDelegate()];
     }
 
     function getServiceDelegate() as [$.Toybox.System.ServiceDelegate] {
-        return [new risumonServiceDelegate()];
+        return [new PokewalkerServiceDelegate()];
     }
 }
 
-function getApp() as risumonApp {
-    return Application.getApp() as risumonApp;
+function getApp() as PokewalkerApp {
+    return Application.getApp() as PokewalkerApp;
 }

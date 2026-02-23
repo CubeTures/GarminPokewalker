@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class risumonDelegate extends WatchUi.BehaviorDelegate {
+class PokewalkerDelegate extends WatchUi.BehaviorDelegate {
     function initialize() {
         BehaviorDelegate.initialize();
     }
@@ -9,7 +9,7 @@ class risumonDelegate extends WatchUi.BehaviorDelegate {
     function onMenu() as Boolean {
         WatchUi.pushView(
             new Rez.Menus.MainMenu(),
-            new risumonMenuDelegate(),
+            new PokewalkerMenuDelegate(),
             WatchUi.SLIDE_UP
         );
         return true;

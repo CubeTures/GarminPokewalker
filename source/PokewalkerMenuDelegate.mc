@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
-class risumonMenuDelegate extends WatchUi.MenuInputDelegate {
+class PokewalkerMenuDelegate extends WatchUi.MenuInputDelegate {
     function initialize() {
         MenuInputDelegate.initialize();
     }

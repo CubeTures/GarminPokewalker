@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 import Toybox.System;
 import Toybox.Lang;
 
-class risumonView extends WatchUi.View {
+class PokewalkerView extends WatchUi.View {
     var hamster as Graphics.BitmapType?;
 
     function initialize() {

@@ -1,7 +1,7 @@
 using Toybox.System;
 
 (:background)
-class risumonServiceDelegate extends System.ServiceDelegate {
+class PokewalkerServiceDelegate extends System.ServiceDelegate {
     function initialize() {
         ServiceDelegate.initialize();
     }
