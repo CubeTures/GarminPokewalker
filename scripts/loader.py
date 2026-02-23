@@ -1,6 +1,7 @@
 import json
 from copy import deepcopy
-from typing import Any
+from typing import Any, Callable
+
 
 class Sprite:
     idx: int
@@ -56,7 +57,9 @@ def import_sprites():
                 if details.get("is_unofficial_icon"):
                     continue
 
-                has_female = details["has_female"] and not details.get("has_unofficial_female_icon")
+                has_female = details["has_female"] and not details.get(
+                    "has_unofficial_female_icon"
+                )
                 has_right = details["has_right"]
 
                 aliases.append(form)
@@ -75,3 +78,36 @@ def import_sprites():
                     sprites.append(right)
 
     return sprites
+
+
+def partition_sprites(sprites: list[Sprite]) -> list[list[Sprite]]:
+    partition: list[list[Sprite]] = []
+
+    def add_partition(check: Callable[[Sprite], bool]):
+        collection: list[Sprite] = []
+        for sprite in sprites:
+            if check(sprite):
+                collection.append(sprite)
+        partition.append(collection)
+
+    add_partition(
+        lambda sprite: (
+            not sprite.is_female and sprite.form == "$" and not sprite.is_right
+        )
+    )
+    add_partition(
+        lambda sprite: (sprite.is_female and sprite.form == "$" and not sprite.is_right)
+    )
+    add_partition(
+        lambda sprite: (
+            not sprite.is_female and sprite.form != "$" and not sprite.is_right
+        )
+    )
+    add_partition(
+        lambda sprite: (not sprite.is_female and sprite.form == "$" and sprite.is_right)
+    )
+    add_partition(
+        lambda sprite: (not sprite.is_female and sprite.form != "$" and sprite.is_right)
+    )
+
+    return partition

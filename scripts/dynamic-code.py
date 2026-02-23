@@ -1,6 +1,4 @@
 import os
-from loader import import_sprites, Sprite
-from typing import Callable
 
 
 def xml():
