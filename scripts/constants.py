@@ -7,3 +7,4 @@ sprite_large_width = 68
 sprite_large_height = 56
 sprite_offset_x = 14
 sprite_offset_y = 25
+skip_mons = [808, 809]  # Melmetal only has a gen 8 (large 68x56) sprite

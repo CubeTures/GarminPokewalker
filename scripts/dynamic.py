@@ -5,13 +5,15 @@ import constants
 
 
 def xml():
+    sprites = loader.import_sprites()
+    partitions = loader.partition_sprites(sprites)
     output = """<drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">\n"""
 
-    sheets = os.listdir("scripts/output/pack")
-    for i in range(len(sheets)):
-        output += (
-            f"""\t<bitmap id="sprites_{i}" filename="{i}.png" compress="true"/>\n"""
-        )
+    sheet = 0
+    for partition in partitions:
+        for _ in range(math.ceil(len(partition) / constants.sheet_capacity)):
+            output += f"""\t<bitmap id="sprites_{sheet}" filename="{sheet}.png" compress="true"/>\n"""
+            sheet += 1
 
     output += "</drawables>"
 
@@ -64,11 +66,11 @@ def mc():
 
     for partition in partitions:
         statements: list[tuple[str, str]] = []
-        for i in range(math.ceil(len(partition) / 16)):
+        for i in range(math.ceil(len(partition) / constants.sheet_capacity)):
             idx = min(
                 i * constants.sheet_capacity + constants.sheet_capacity, len(partition)
             )
-            sid = int(partition[idx - 1].idx)
+            sid = partition[idx - 1].idx
             statements.append(
                 (f"p.sid <= {sid}", f"return Rez.Drawables.sprites_{sheet};")
             )
@@ -107,5 +109,5 @@ def mc():
 
 
 if __name__ == "__main__":
-    # xml()
+    xml()
     mc()

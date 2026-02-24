@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 from typing import Any, Callable
-
+import constants
 
 class Sprite:
     idx: int
@@ -41,9 +41,12 @@ def import_sprites():
             aliases: list[str] = []
 
             base = Sprite()
-            base.idx = data["idx"]
+            base.idx = int(data["idx"])
             base.name = data["name"]["eng"]
             base.slug = data["slug"]["eng"]
+
+            if base.idx in constants.skip_mons:
+                continue
 
             forms: dict[str, Any] = data["gen-7"]["forms"]
             for form, details in forms.items():
