@@ -10,4 +10,6 @@ venv/
 **/output/
 
 # Volatile
-resources/data
+resources/_generated/*
+source/_generated/*
+!**/.gitkeep

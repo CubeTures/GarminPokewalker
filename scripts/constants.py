@@ -1,0 +1,9 @@
+sheet_width = 4
+sheet_height = 4
+sheet_capacity = sheet_width * sheet_height
+sprite_width = 40
+sprite_height = 30
+sprite_large_width = 68
+sprite_large_height = 56
+sprite_offset_x = 14
+sprite_offset_y = 25
