@@ -14,7 +14,7 @@ class App extends Application.AppBase {
 
     (:typecheck(disableBackgroundCheck))
     function onStart(state as Dictionary?) as Void {
-        Game.prepareSaveState();
+        // Game.prepareSaveState();
     }
 
     (:typecheck(disableBackgroundCheck))

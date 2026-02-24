@@ -3,11 +3,13 @@ from copy import deepcopy
 from typing import Any, Callable
 import constants
 
+
 class Sprite:
     idx: int
     name: str
     slug: str
     form: str
+    form_i: int
     is_female: bool = False
     is_right: bool = False
     is_shiny: bool = False
@@ -25,7 +27,7 @@ class Sprite:
         r: str = "r" if self.is_right else ""
         s: str = "s" if self.is_shiny else ""
         _ = "_" if f or r or s else ""
-        return f"{self.idx}_{self.form}{_}{f}{r}{s}"
+        return f"{self.idx}_{self.form_i}{_}{f}{r}{s}"
 
 
 def import_sprites():
@@ -48,13 +50,25 @@ def import_sprites():
             if base.idx in constants.skip_mons:
                 continue
 
-            forms: dict[str, Any] = data["gen-7"]["forms"]
-            for form, details in forms.items():
-                if form in ["galar", "starter"]:
-                    continue
+            def form_filter(data: tuple[str, Any]) -> bool:
+                _, details = data
+                return not details.get("is_alias_of")
 
-                alias = details.get("is_alias_of")
-                if alias and alias in aliases:
+            def form_key(data: tuple[str, Any]) -> int:
+                form, details = data
+                if form == "$":
+                    priority = 0
+                elif details["has_right"]:
+                    priority = 1
+                else:
+                    priority = 2
+                return priority
+
+            forms: dict[str, Any] = data["gen-7"]["forms"]
+            forms_filtered = filter(form_filter, forms.items())
+            forms_sorted = list(sorted(forms_filtered, key=form_key))
+            for i, [form, details] in enumerate(forms_sorted):
+                if form in ["galar", "starter"]:
                     continue
 
                 if details.get("is_unofficial_icon"):
@@ -68,6 +82,7 @@ def import_sprites():
                 aliases.append(form)
                 sprite = deepcopy(base)
                 sprite.form = form
+                sprite.form_i = i
                 sprites.append(sprite)
 
                 if has_female:

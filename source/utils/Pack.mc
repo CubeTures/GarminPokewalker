@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-module Models {
+module Utils {
     function unpackUint32(bytes as ByteArray, offset as Number) as Number {
         return (
             (bytes[offset].toNumber() & 0xff) |

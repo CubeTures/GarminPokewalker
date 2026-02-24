@@ -35,8 +35,13 @@ def gen_if(statements: list[tuple[str, str]]) -> str:
     return output
 
 
-def gen_func(name: str, blocks: list[str], return_type: str = "ResourceId") -> str:
-    return f"""\tfunction {name}(p as Models.Pokemon) as {return_type} {{
+def gen_func(
+    name: str,
+    blocks: list[str],
+    params: str = "p as Models.Pokemon",
+    return_type: str = "ResourceId",
+) -> str:
+    return f"""\tfunction {name}({params}) as {return_type} {{
 {"\n\n".join(blocks)}
     }}"""
 
@@ -53,6 +58,17 @@ def mc():
     sprites = loader.import_sprites()
     partitions = loader.partition_sprites(sprites)
 
+    arrays: list[str] = []
+    groups = [
+        ("femaleSprites", partitions[1]),
+        ("formSprites", partitions[2]),
+        ("rightSprites", partitions[3]),
+        ("rightFormSprites", partitions[4]),
+    ]
+    for name, group in groups:
+        sids = list(map(lambda sprite: str(sprite.idx), group))
+        arrays.append(f"\tconst {name} = [{", ".join(sids)}] as Array<Number>;")
+
     sheet = 0
     func = 0
     funcs: list[str] = []
@@ -64,46 +80,35 @@ def mc():
         "loadRightFormSprite",
     ]
 
-    for partition in partitions:
+    for pi, partition in enumerate(partitions):
         statements: list[tuple[str, str]] = []
         for i in range(math.ceil(len(partition) / constants.sheet_capacity)):
             idx = min(
                 i * constants.sheet_capacity + constants.sheet_capacity, len(partition)
             )
             sid = partition[idx - 1].idx
-            statements.append(
-                (f"p.sid <= {sid}", f"return Rez.Drawables.sprites_{sheet};")
-            )
+            form = partition[idx - 1].form_i
+            if pi == 2 or pi == 4:
+                condition = f"p.sid < {sid} || (p.sid == {sid} && p.form <= {form})"
+            else:
+                condition = f"p.sid <= {sid}"
+            statements.append((condition, f"return Rez.Drawables.sprites_{sheet};"))
             sheet += 1
         funcs.append(gen_func(names[func], [gen_if(statements)]))
         func += 1
 
     funcs.append(
         gen_func(
-            "_loadBaseSpriteOffset",
+            "loadSpriteOffset",
             [
-                f"\t\treturn [p.sid % {constants.sheet_width} * {constants.sprite_width}, p.sid % {constants.sheet_height} * {constants.sprite_height}];"
+                f"\t\treturn [(i % {constants.sheet_width}) * {constants.sprite_width}, ((i % {constants.sheet_capacity}) / {constants.sheet_height}) * {constants.sprite_height}];"
             ],
+            "i as Number",
             "[Number, Number]",
         )
     )
 
-    # TODO
-    todos = [
-        ("hasFemaleSprite", "return false;", "Boolean"),
-        ("hasRightSprite", "return false;", "Boolean"),
-        ("hasRightFormSprite", "return false;", "Boolean"),
-        ("loadBaseSpriteOffset", "return [0, 0];", "[Number, Number]"),
-        ("loadFemaleSpriteOffset", "return [0, 0];", "[Number, Number]"),
-        ("loadFormSpriteOffset", "return [0, 0];", "[Number, Number]"),
-        ("loadRightSpriteOffset", "return [0, 0];", "[Number, Number]"),
-        ("loadRightFormSpriteOffset", "return [0, 0];", "[Number, Number]"),
-    ]
-
-    for todo in todos:
-        funcs.append(gen_func(todo[0], [f"\t\t{todo[1]}"], todo[2]))
-
-    module = gen_mod("Generated", funcs)
+    module = gen_mod("Generated", arrays + funcs)
     with open("source/_generated/LoadSprite.mc", "w") as file:
         file.write(module)
 
