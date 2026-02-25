@@ -36,6 +36,8 @@
 - Starter
     - Audino
 
+- enter, up, menu, down, esc
+
 # Mechanics
 
 ## Tenants

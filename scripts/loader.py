@@ -10,13 +10,18 @@ class Sprite:
     slug: str
     form: str
     form_i: int
+    reflect: bool = False
     is_female: bool = False
     is_right: bool = False
     is_shiny: bool = False
 
     def get_path(self) -> str:
         root: str = "shiny" if self.is_shiny else "regular"
-        nest: str = "female" if self.is_female else ("right" if self.is_right else "")
+        nest: str = (
+            "female"
+            if self.is_female
+            else ("right" if self.is_right and not self.reflect else "")
+        )
         nest: str = f"/{nest}" if nest else ""
         mod: str = self.form if self.form != "$" else ""
         mod: str = f"-{mod}" if mod else ""
@@ -24,10 +29,9 @@ class Sprite:
 
     def get_target(self) -> str:
         f: str = "f" if self.is_female else ""
-        r: str = "r" if self.is_right else ""
+        r: str = "r" if self.is_right else "l"
         s: str = "s" if self.is_shiny else ""
-        _ = "_" if f or r or s else ""
-        return f"{self.idx}_{self.form_i}{_}{f}{r}{s}"
+        return f"{self.idx}_{self.form_i}_{f}{r}{s}"
 
 
 def import_sprites():
@@ -50,25 +54,13 @@ def import_sprites():
             if base.idx in constants.skip_mons:
                 continue
 
-            def form_filter(data: tuple[str, Any]) -> bool:
-                _, details = data
-                return not details.get("is_alias_of")
-
-            def form_key(data: tuple[str, Any]) -> int:
-                form, details = data
-                if form == "$":
-                    priority = 0
-                elif details["has_right"]:
-                    priority = 1
-                else:
-                    priority = 2
-                return priority
-
             forms: dict[str, Any] = data["gen-7"]["forms"]
-            forms_filtered = filter(form_filter, forms.items())
-            forms_sorted = list(sorted(forms_filtered, key=form_key))
-            for i, [form, details] in enumerate(forms_sorted):
+            for i, [form, details] in enumerate(forms.items()):
                 if form in ["galar", "starter"]:
+                    continue
+
+                alias = details.get("is_alias_of")
+                if alias and alias in aliases:
                     continue
 
                 if details.get("is_unofficial_icon"):
@@ -95,7 +87,25 @@ def import_sprites():
                     right.is_right = True
                     sprites.append(right)
 
-    return sprites
+    include: list[Sprite] = []
+    for sprite in sprites:
+        has_right = False
+        for check in sprites:
+            right = (
+                sprite.idx == check.idx
+                and sprite.is_female == check.is_female
+                and sprite.form == check.form
+                and check.is_right
+            )
+            has_right = right or has_right
+
+        if not has_right:
+            right = deepcopy(sprite)
+            right.reflect = True
+            right.is_right = True
+            include.append(right)
+
+    return sorted(sprites + include, key=lambda spr: [spr.idx, spr.form_i])
 
 
 def partition_sprites(sprites: list[Sprite]) -> list[list[Sprite]]:
@@ -123,6 +133,9 @@ def partition_sprites(sprites: list[Sprite]) -> list[list[Sprite]]:
     )
     add_partition(
         lambda sprite: (not sprite.is_female and sprite.form == "$" and sprite.is_right)
+    )
+    add_partition(
+        lambda sprite: (sprite.is_female and sprite.form == "$" and sprite.is_right)
     )
     add_partition(
         lambda sprite: (not sprite.is_female and sprite.form != "$" and sprite.is_right)

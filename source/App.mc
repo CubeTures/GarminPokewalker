@@ -25,7 +25,7 @@ class App extends Application.AppBase {
     (:typecheck(disableBackgroundCheck))
     function getInitialView() as [WatchUi.Views] or
         [WatchUi.Views, WatchUi.InputDelegates] {
-        return [new Views.HomeView(), new Delegates.HomeDelegate()];
+        return [new AppHome.HomeView(), new AppHome.HomeDelegate()];
     }
 }
 

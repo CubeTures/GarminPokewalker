@@ -33,7 +33,6 @@ def create_sheets(
     width: int,
     height: int,
 ):
-
     state: dict[str, int | list[Image.Image]] = {
         "total": 0,
         "images": [],

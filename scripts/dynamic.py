@@ -62,8 +62,6 @@ def mc():
     groups = [
         ("femaleSprites", partitions[1]),
         ("formSprites", partitions[2]),
-        ("rightSprites", partitions[3]),
-        ("rightFormSprites", partitions[4]),
     ]
     for name, group in groups:
         sids = list(map(lambda sprite: str(sprite.idx), group))
@@ -76,11 +74,12 @@ def mc():
         "loadBaseSprite",
         "loadFemaleSprite",
         "loadFormSprite",
-        "loadRightSprite",
+        "loadRightBaseSprite",
+        "loadRightFemaleSprite",
         "loadRightFormSprite",
     ]
 
-    for pi, partition in enumerate(partitions):
+    for partition in partitions:
         statements: list[tuple[str, str]] = []
         for i in range(math.ceil(len(partition) / constants.sheet_capacity)):
             idx = min(
@@ -88,7 +87,7 @@ def mc():
             )
             sid = partition[idx - 1].idx
             form = partition[idx - 1].form_i
-            if pi == 2 or pi == 4:
+            if "Form" in names[func]:
                 condition = f"p.sid < {sid} || (p.sid == {sid} && p.form <= {form})"
             else:
                 condition = f"p.sid <= {sid}"

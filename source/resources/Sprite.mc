@@ -4,68 +4,49 @@ using Toybox.Graphics;
 module Resources {
     class Sprite {
         (:initialized)
-        var left as Graphics.BitmapType;
+        var bitmap as Graphics.BitmapType;
         (:initialized)
-        var right as Graphics.BitmapType;
+        var offset as [Number, Number];
 
-        (:initialized)
-        var leftOffset as [Number, Number];
-        (:initialized)
-        var rightOffset as [Number, Number];
-
-        function initialize(p as Models.Pokemon) {
-            loadSprite(p);
+        function initialize(p as Models.Pokemon, facingRight as Boolean) {
+            loadSprite(p, facingRight);
         }
 
         // female sprites do not have form nor right versions
-        function loadSprite(p as Models.Pokemon) as Void {
-            var lRez, rRez;
+        function loadSprite(
+            p as Models.Pokemon,
+            facingRight as Boolean
+        ) as Void {
+            var rez;
 
             if (p.form != 0) {
-                lRez = Generated.loadFormSprite(p);
-                leftOffset = loadFormSpriteOffset(p);
+                if (facingRight) {
+                    rez = Generated.loadRightFormSprite(p);
+                } else {
+                    rez = Generated.loadFormSprite(p);
+                }
+                offset = loadFormSpriteOffset(p);
             } else if (hasFemaleSprite(p)) {
-                lRez = Generated.loadFemaleSprite(p);
-                leftOffset = loadFemaleSpriteOffset(p);
+                if (facingRight) {
+                    rez = Generated.loadRightFemaleSprite(p);
+                } else {
+                    rez = Generated.loadFemaleSprite(p);
+                }
+                offset = loadFemaleSpriteOffset(p);
             } else {
-                lRez = Generated.loadBaseSprite(p);
-                leftOffset = loadBaseSpriteOffset(p);
+                if (facingRight) {
+                    rez = Generated.loadRightBaseSprite(p);
+                } else {
+                    rez = Generated.loadBaseSprite(p);
+                }
+                offset = loadBaseSpriteOffset(p);
             }
 
-            if (p.form != 0 && hasRightFormSprite(p)) {
-                rRez = Generated.loadRightFormSprite(p);
-                rightOffset = loadRightFormSpriteOffset(p);
-            } else if (hasRightSprite(p)) {
-                rRez = Generated.loadRightSprite(p);
-                rightOffset = loadRightSpriteOffset(p);
-            } else {
-                rRez = lRez;
-                rightOffset = leftOffset;
-            }
-
-            left = WatchUi.loadResource(lRez) as Graphics.BitmapType;
-            if (lRez != rRez) {
-                right = WatchUi.loadResource(rRez) as Graphics.BitmapType;
-            } else {
-                // reuse the data
-                right = left;
-            }
+            bitmap = WatchUi.loadResource(rez) as Graphics.BitmapType;
         }
 
         function hasFemaleSprite(p as Models.Pokemon) as Boolean {
             return Utils.linearSearch(Generated.femaleSprites, p.sid) != -1;
-        }
-
-        function hasRightSprite(p as Models.Pokemon) as Boolean {
-            return Utils.binarySearch(Generated.rightSprites, p.sid) != -1;
-        }
-
-        function hasRightFormSprite(p as Models.Pokemon) as Boolean {
-            var count = Utils.binarySearchCount(
-                Generated.rightFormSprites,
-                p.sid
-            );
-            return p.form <= count;
         }
 
         function loadBaseSpriteOffset(p as Models.Pokemon) as [Number, Number] {
@@ -87,44 +68,13 @@ module Resources {
             return Generated.loadSpriteOffset(i);
         }
 
-        function loadRightSpriteOffset(
-            p as Models.Pokemon
-        ) as [Number, Number] {
-            var i = Utils.binarySearch(Generated.rightSprites, p.sid);
-            return Generated.loadSpriteOffset(i);
-        }
-
-        function loadRightFormSpriteOffset(
-            p as Models.Pokemon
-        ) as [Number, Number] {
-            var i =
-                Utils.binarySearchFirst(Generated.rightFormSprites, p.sid) +
-                p.form -
-                1;
-            return Generated.loadSpriteOffset(i);
-        }
-
         function drawSprite(
             dc as Graphics.Dc,
-            facingLeft as Boolean,
             x as Number,
             y as Number
         ) as Void {
-            if (facingLeft) {
-                dc.setClip(x - 20, y, 40, 30);
-                dc.drawBitmap(
-                    x - 20 - leftOffset[0],
-                    y - leftOffset[1],
-                    left
-                );
-            } else {
-                dc.setClip(x + 20, y, 40, 30);
-                dc.drawBitmap(
-                    x + 20 - rightOffset[0],
-                    y - rightOffset[1],
-                    right
-                );
-            }
+            dc.setClip(x, y, 40, 30);
+            dc.drawBitmap(x - offset[0], y - offset[1], bitmap);
             dc.clearClip();
         }
     }

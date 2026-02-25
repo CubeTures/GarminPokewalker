@@ -17,6 +17,7 @@ BoolArray = npt.NDArray[np.bool_]
 def process_image(
     input_path: str,
     output_path: str,
+    flip: bool,
     func: Callable[[MatLike, MatLike], MatLike],
 ) -> None:
     img: MatLike | None = cv2.imread(input_path, cv2.IMREAD_UNCHANGED)
@@ -32,6 +33,8 @@ def process_image(
 
     binary = func(bgr, alpha)
     result = cv2.merge([binary, binary, binary, alpha])
+    if flip:
+        result = cv2.flip(result, 1)
     cv2.imwrite(output_path, result)
 
 
@@ -152,4 +155,4 @@ if __name__ == "__main__":
     for sprite in sprites:
         inp: str = sprite.get_path()
         outp: str = f"{output_path}{sprite.get_target()}.png"
-        process_image(inp, outp, median_pixel_redraw_details)
+        process_image(inp, outp, sprite.reflect, median_pixel_redraw_details)
