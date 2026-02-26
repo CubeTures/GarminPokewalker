@@ -36,6 +36,7 @@ module AppHome {
             dc.clear();
             Visuals.drawGrid(dc);
             clock.draw(dc);
+            Visuals.drawBulb(dc);
 
             // if (spriteLeft != null) {
             //     spriteLeft.drawSprite(dc, 68 - 20, 73);

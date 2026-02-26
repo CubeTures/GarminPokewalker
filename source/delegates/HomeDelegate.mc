@@ -30,6 +30,7 @@ module AppHome {
 
         function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
             if (keyEvent.getKey() == WatchUi.KEY_UP) {
+                Visuals.condition--;
                 pokemon.sid--;
                 if (pokemon.sid <= 0) {
                     pokemon.sid = 807;
@@ -38,6 +39,7 @@ module AppHome {
                 WatchUi.requestUpdate();
             }
             if (keyEvent.getKey() == WatchUi.KEY_DOWN) {
+                Visuals.condition++;
                 pokemon.sid++;
                 if (pokemon.sid >= 808) {
                     pokemon.sid = 1;

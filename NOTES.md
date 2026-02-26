@@ -38,6 +38,10 @@
 
 - enter, up, menu, down, esc
 
+- Search minigame
+    - Can use the mint icon as grass patch
+    - Or can use random berries as "lure"
+
 # Mechanics
 
 ## Tenants
