@@ -2,4 +2,6 @@
     <bitmap id="LauncherIcon" filename="launcher_icon.svg" dithering="none" />
     <bitmap id="unknown" filename="unknown.png" compress="true" dithering="none" />
     <bitmap id="weather" filename="weather.png" compress="true" />
+    <bitmap id="map" filename="map.jpeg" compress="true" />
+    <bitmap id="footprints" filename="footprints.png" compress="true" />
 </drawables>

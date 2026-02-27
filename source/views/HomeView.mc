@@ -2,6 +2,7 @@ import Toybox.Lang;
 using Toybox.Graphics;
 using Toybox.WatchUi;
 using Toybox.System;
+using Toybox.ActivityMonitor;
 
 module Views {
     class HomeView extends WatchUi.View {
@@ -9,6 +10,8 @@ module Views {
         var pokemon as Models.Pokemon;
         var spriteLeft as Resources.Sprite?;
         var spriteRight as Resources.Sprite?;
+        var stepsIcon as Graphics.BitmapType;
+        var stepsText as WatchUi.Text;
 
         function initialize() {
             View.initialize();
@@ -16,6 +19,24 @@ module Views {
             pokemon = new Models.Pokemon();
             pokemon.sid = 0;
             pokemon.form = 0;
+
+            stepsIcon =
+                WatchUi.loadResource(Rez.Drawables.footprints) as
+                Graphics.BitmapType;
+            stepsText = new WatchUi.Text({
+                :color => Graphics.COLOR_WHITE,
+                :justification => Graphics.TEXT_JUSTIFY_LEFT,
+                :font => Graphics.FONT_SMALL,
+                :locX => Constants.POS_2 + 28,
+                :locY => 146,
+            });
+            var info = ActivityMonitor.getInfo();
+            var steps = info.steps;
+            if (steps != null) {
+                stepsText.setText(steps.toString());
+            } else {
+                stepsText.setText("UNK");
+            }
         }
 
         function onShow() as Void {
@@ -40,6 +61,9 @@ module Views {
             if (spriteRight != null) {
                 spriteRight.drawSprite(dc, 68 + 20, 73);
             }
+
+            dc.drawBitmap(Constants.POS_2, 146, stepsIcon);
+            stepsText.draw(dc);
         }
 
         function onHide() as Void {

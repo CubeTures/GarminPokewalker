@@ -25,14 +25,6 @@
 
 # Thoughts
 
-- Load as much as possible on demand and all at once
-    - Try not to read files often as it could cause stuttering
-
-- 176 x 176 pixels display instinct 3 solar 45mm
-
-- Optimal image compression algorithm
-    - (2 bits color, 1 byte length)
-
 - Starter
     - Audino
 
