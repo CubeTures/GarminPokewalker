@@ -2,21 +2,13 @@ import Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.System;
 
-module AppHome {
-    (:initialized)
-    var pokemon as Models.Pokemon;
-    var spriteLeft as Resources.Sprite?;
-    var spriteRight as Resources.Sprite?;
-
-    function loadSprites() as Void {
-        System.println("Loading sprite for sid " + pokemon.sid);
-        spriteLeft = new Resources.Sprite(pokemon, false);
-        spriteRight = new Resources.Sprite(pokemon, true);
-    }
-
+module Delegates {
     class HomeDelegate extends WatchUi.BehaviorDelegate {
-        function initialize() {
+        var view as Views.HomeView;
+
+        function initialize(view as Views.HomeView) {
             BehaviorDelegate.initialize();
+            self.view = view;
         }
 
         function onMenu() as Boolean {
@@ -25,28 +17,28 @@ module AppHome {
                 new Delegates.MainMenuDelegate(),
                 WatchUi.SLIDE_UP
             );
+
             return true;
         }
 
         function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
             if (keyEvent.getKey() == WatchUi.KEY_UP) {
-                Visuals.condition--;
-                pokemon.sid--;
-                if (pokemon.sid <= 0) {
-                    pokemon.sid = 807;
+                view.pokemon.sid--;
+                if (view.pokemon.sid < 0) {
+                    view.pokemon.sid = 806;
                 }
-                loadSprites();
+                view.loadSprites();
                 WatchUi.requestUpdate();
             }
             if (keyEvent.getKey() == WatchUi.KEY_DOWN) {
-                Visuals.condition++;
-                pokemon.sid++;
-                if (pokemon.sid >= 808) {
-                    pokemon.sid = 1;
+                view.pokemon.sid++;
+                if (view.pokemon.sid > 806) {
+                    view.pokemon.sid = 0;
                 }
-                loadSprites();
+                view.loadSprites();
                 WatchUi.requestUpdate();
             }
+
             return true;
         }
     }

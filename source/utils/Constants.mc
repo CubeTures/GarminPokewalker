@@ -1,5 +1,6 @@
 module Constants {
     const POS_STEP = 29;
+    
     enum Position {
         POS_0 = 1,
         POS_1 = 30,
