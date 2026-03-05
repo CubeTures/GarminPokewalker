@@ -22,7 +22,7 @@ I welcome any and all contributions to this project to improve it. However, ther
     - It must use conditional logic to add new features where necessary
 2. The original vision of the app must be maintained
     - The app must remain offline-first
-    - The visuals must remain monochrome
+    - The visuals must remain monochrome and pixelated
 3. Constraints should be overcome with clever loading and data storage, not bad coding practices
     - No removing classes unnecessarily to save data
     - No changing out enums and consts to save data

@@ -1,7 +1,8 @@
-import json
 from copy import deepcopy
 from typing import Any, Callable
-import constants
+import scripts.utils.constants as constants
+import scripts.utils.paths as paths
+import scripts.utils.utils as utils
 
 
 class Sprite:
@@ -25,7 +26,7 @@ class Sprite:
         nest: str = f"/{nest}" if nest else ""
         mod: str = self.form if self.form != "$" else ""
         mod: str = f"-{mod}" if mod else ""
-        return f"scripts/pokesprite/pokemon-gen7x/{root}{nest}/{self.slug}{mod}.png"
+        return f"{paths.POKESPRITE}/pokemon-gen7x/{root}{nest}/{self.slug}{mod}.png"
 
     def get_target(self) -> str:
         f: str = "f" if self.is_female else ""
@@ -34,58 +35,56 @@ class Sprite:
         return f"{self.idx}_{self.form_i}_{f}{r}{s}"
 
 
-def import_sprites():
+def load_sprites():
     sprites: list[Sprite] = []
+    pokemon: dict[str, Any] = utils.read_json(f"{paths.POKESPRITE}/data/pokemon.json")
 
-    with open("scripts/pokesprite/data/pokemon.json") as file:
-        pokemon: dict[str, Any] = json.load(file)
+    for data in pokemon.values():
+        if data["gen-7"] == {}:
+            continue
 
-        for data in pokemon.values():
-            if data["gen-7"] == {}:
+        aliases: list[str] = []
+
+        base = Sprite()
+        base.idx = int(data["idx"])
+        base.name = data["name"]["eng"]
+        base.slug = data["slug"]["eng"]
+
+        if base.idx in constants.SKIP_MONS:
+            continue
+
+        forms: dict[str, Any] = data["gen-7"]["forms"]
+        for i, [form, details] in enumerate(forms.items()):
+            if form in ["galar", "starter"]:
                 continue
 
-            aliases: list[str] = []
-
-            base = Sprite()
-            base.idx = int(data["idx"])
-            base.name = data["name"]["eng"]
-            base.slug = data["slug"]["eng"]
-
-            if base.idx in constants.skip_mons:
+            alias = details.get("is_alias_of")
+            if alias and alias in aliases:
                 continue
 
-            forms: dict[str, Any] = data["gen-7"]["forms"]
-            for i, [form, details] in enumerate(forms.items()):
-                if form in ["galar", "starter"]:
-                    continue
+            if details.get("is_unofficial_icon"):
+                continue
 
-                alias = details.get("is_alias_of")
-                if alias and alias in aliases:
-                    continue
+            has_female = details["has_female"] and not details.get(
+                "has_unofficial_female_icon"
+            )
+            has_right = details["has_right"]
 
-                if details.get("is_unofficial_icon"):
-                    continue
+            aliases.append(form)
+            sprite = deepcopy(base)
+            sprite.form = form
+            sprite.form_i = i
+            sprites.append(sprite)
 
-                has_female = details["has_female"] and not details.get(
-                    "has_unofficial_female_icon"
-                )
-                has_right = details["has_right"]
+            if has_female:
+                female = deepcopy(sprite)
+                female.is_female = True
+                sprites.append(female)
 
-                aliases.append(form)
-                sprite = deepcopy(base)
-                sprite.form = form
-                sprite.form_i = i
-                sprites.append(sprite)
-
-                if has_female:
-                    female = deepcopy(sprite)
-                    female.is_female = True
-                    sprites.append(female)
-
-                if has_right:
-                    right = deepcopy(sprite)
-                    right.is_right = True
-                    sprites.append(right)
+            if has_right:
+                right = deepcopy(sprite)
+                right.is_right = True
+                sprites.append(right)
 
     include: list[Sprite] = []
     for sprite in sprites:

@@ -28,7 +28,12 @@ module Visuals {
         function draw(dc as Graphics.Dc) as Void {
             if (clock != null) {
                 var time = System.getClockTime();
-                clock.setText((time.hour % 12) + ":" + time.min);
+                var min = time.min;
+                var minStr = min.toString();
+                if (min < 10) {
+                    minStr = "0" + minStr;
+                }
+                clock.setText((time.hour % 12) + ":" + minStr);
                 clock.draw(dc);
             }
             if (date != null) {

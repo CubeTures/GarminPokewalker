@@ -12,4 +12,6 @@ venv/
 # Volatile
 resources/_generated/*
 source/_generated/*
+scripts/_output
+scripts/_references
 !**/.gitkeep

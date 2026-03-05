@@ -1,0 +1,8 @@
+RESOURCES = "resources/_generated"
+SOURCE = "source/_generated"
+DATA = "scripts/_data"
+OUTPUT = "scripts/_output"
+LOCATIONS = f"{OUTPUT}/locations"
+REFERENCES = "scripts/_references"
+POKESPRITE = f"{REFERENCES}/pokesprite"
+POKEDB = f"{REFERENCES}/pokedb"

@@ -37,43 +37,39 @@ module Utils {
         arr as Array<Number>,
         target as Number
     ) as Number {
-        var start = -1;
-
-        var low = 0;
-        var high = arr.size() - 1;
-        while (low <= high) {
-            var mid = low + (high - low) / 2;
-            var val = arr[mid];
-
-            if (val == target) {
-                start = mid;
-                high = mid - 1;
-            } else if (val < target) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-
-        return start;
+        return binaryBound(arr, target, true);
     }
 
     function binarySearchCount(
         arr as Array<Number>,
         target as Number
     ) as Number {
-        var start = -1;
-        var end = -1;
+        var start = binaryBound(arr, target, true);
+        if (start == -1) {
+            return 0;
+        }
+        return binaryBound(arr, target, false) - start + 1;
+    }
 
+    function binaryBound(
+        arr as Array<Number>,
+        target as Number,
+        findFirst as Boolean
+    ) as Number {
+        var result = -1;
         var low = 0;
         var high = arr.size() - 1;
+
         while (low <= high) {
             var mid = low + (high - low) / 2;
             var val = arr[mid];
-
             if (val == target) {
-                start = mid;
-                high = mid - 1;
+                result = mid;
+                if (findFirst) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
             } else if (val < target) {
                 low = mid + 1;
             } else {
@@ -81,22 +77,6 @@ module Utils {
             }
         }
 
-        low = 0;
-        high = arr.size() - 1;
-        while (low <= high) {
-            var mid = low + (high - low) / 2;
-            var val = arr[mid];
-
-            if (val == target) {
-                end = mid;
-                low = mid + 1;
-            } else if (val < target) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-
-        return end - start;
+        return result;
     }
 }

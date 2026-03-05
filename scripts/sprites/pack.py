@@ -1,27 +1,26 @@
-from __future__ import annotations
-
 import os
 from typing import List
-
 from PIL import Image
-import loader
-from loader import Sprite
-import constants
+
+from scripts.sprites.sprite import Sprite
+import scripts.sprites.sprite as sprite
+import scripts.utils.constants as constants
+import scripts.utils.paths as paths
 
 
 def crop_sprite(input_path: str) -> Image.Image:
     with Image.open(input_path) as img:
         width, height = img.size
         if (
-            width != constants.sprite_large_width
-            or height != constants.sprite_large_height
+            width != constants.SPRITE_LARGE_WIDTH
+            or height != constants.SPRITE_LARGE_HEIGHT
         ):
             print(f"Warning: {input_path} is {width}x{height}, expected 68x56.")
 
-        left: int = constants.sprite_offset_x
-        upper: int = constants.sprite_offset_y
-        right: int = left + constants.sprite_width
-        lower: int = upper + constants.sprite_height
+        left: int = constants.SPRITE_OFFSET_X
+        upper: int = constants.SPRITE_OFFSET_Y
+        right: int = left + constants.SPRITE_WIDTH
+        lower: int = upper + constants.SPRITE_HEIGHT
 
         return img.crop((left, upper, right, lower))
 
@@ -48,8 +47,8 @@ def create_sheets(
         sheet = Image.new(
             "RGBA",
             (
-                width * constants.sprite_width,
-                height * constants.sprite_height,
+                width * constants.SPRITE_WIDTH,
+                height * constants.SPRITE_HEIGHT,
             ),
         )
 
@@ -60,8 +59,8 @@ def create_sheets(
                     sheet.paste(
                         images[i],
                         (
-                            col * constants.sprite_width,
-                            row * constants.sprite_height,
+                            col * constants.SPRITE_WIDTH,
+                            row * constants.SPRITE_HEIGHT,
                         ),
                     )
                     i += 1
@@ -79,7 +78,7 @@ def create_sheets(
         img = crop_sprite(in_path)
         images.append(img)
 
-        if len(images) >= constants.sheet_capacity:
+        if len(images) >= constants.SHEET_CAPACITY:
             write_sheet()
 
     for group in partition:
@@ -92,17 +91,17 @@ def create_sheets(
             write_sheet()
 
 
-if __name__ == "__main__":
-    input_dir: str = "scripts/output/recolor/"
-    output_path: str = "resources/_generated/sprites/"
+def pack_sprites():
+    input_dir: str = f"{paths.OUTPUT}/recolor/"
+    output_path: str = f"{paths.RESOURCES}/sprites/"
     os.makedirs(output_path, exist_ok=True)
 
-    sprites: List[Sprite] = loader.import_sprites()
-    partition = loader.partition_sprites(sprites)
+    sprites: List[Sprite] = sprite.load_sprites()
+    partition = sprite.partition_sprites(sprites)
     create_sheets(
         input_dir,
         output_path,
         partition,
-        constants.sheet_width,
-        constants.sheet_height,
+        constants.SHEET_WIDTH,
+        constants.SHEET_HEIGHT,
     )

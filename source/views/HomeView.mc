@@ -12,6 +12,8 @@ module Views {
         var spriteRight as Resources.Sprite?;
         var stepsIcon as Graphics.BitmapType;
         var stepsText as WatchUi.Text;
+        var forest as Graphics.BitmapType;
+        var mask as Graphics.BitmapType;
 
         function initialize() {
             View.initialize();
@@ -19,6 +21,9 @@ module Views {
             pokemon = new Models.Pokemon();
             pokemon.sid = 0;
             pokemon.form = 0;
+
+            forest =  WatchUi.loadResource(Rez.Drawables.forest) as Graphics.BitmapType; 
+            mask = WatchUi.loadResource(Rez.Drawables.mask) as Graphics.BitmapType; 
 
             stepsIcon =
                 WatchUi.loadResource(Rez.Drawables.footprints) as
@@ -47,19 +52,21 @@ module Views {
 
         function onUpdate(dc as Graphics.Dc) as Void {
             View.onUpdate(dc);
-            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_WHITE);
             dc.clear();
 
-            Visuals.drawGrid(dc);
+            dc.drawBitmap(0, 85, forest);
+            dc.drawBitmap(0, 0, mask);
+            // Visuals.drawGrid(dc);
             Visuals.drawBulb(dc);
             Visuals.drawWeather(dc);
             clock.draw(dc);
 
             if (spriteLeft != null) {
-                spriteLeft.drawSprite(dc, 68 - 20, 73);
+                spriteLeft.drawSprite(dc, 68 - 20, 113);
             }
             if (spriteRight != null) {
-                spriteRight.drawSprite(dc, 68 + 20, 73);
+                spriteRight.drawSprite(dc, 68 + 20, 113);
             }
 
             dc.drawBitmap(Constants.POS_2, 146, stepsIcon);

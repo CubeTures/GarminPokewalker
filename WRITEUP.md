@@ -2,7 +2,9 @@
 
 Since the making of the app was such a chore, I've decided to document my journey here for posterity's sake. If you're just wanting to install this app or even if you're just contributing, you don't need to read this. However, if you want to make an app of a similar scale to this, then you might want to read this so you can potentially learn from my journey.
 
-## Vision
+## Preparation
+
+### Vision
 
 This app came into fruition for very simplistic reasons: I just wanted to make it. I was expecting making an app for a watch to have typical embedded systems restrictions in regards to memory and compute, but what I wasn't prepared for was how much of a headache GarminOS and Monkey C would create themselves. By nature they are restrictive, but that doesn't change the fact they cause a lot of problems for seemingly trivial aspects of development. As they say: "The road to hell is paved with good intentions."
 
@@ -12,7 +14,7 @@ I quickly came to realize that this app would never see the Garmin Connect IQ St
 
 So, following that and an extensive reading of the documentation for Monkey C, I began developing my watch.
 
-## Development Environment
+### Development Environment
 
 The first obstacle unexpectedly came in the form of the development environment. As a Linux user, I realized very quickly there were problems with the SDK: it relied on a now unsupported library `libwebkit2gtk-4.0`. Installing it was not a huge hurdle, but as someone fresh out of research and ready to begin coding an app, I was not expecting to spend so much time merely installing the tools.
 
@@ -20,7 +22,7 @@ I'll skip the details, but essentially I had to register the Ubuntu Jammy reposi
 
 After installing the necessary items from the manager, I went through the relatively harmless process of installing the VSCode extension and creating a project therein. With that out of the way, I of course immediately turned on the strictest typechecking for the project. Little did I know that would be the next big headache I faced.
 
-## Typechecking
+### Typechecking
 
 I don't like dynamically typed programming languages, and everyone that knows me knows this fact. The onus should be on the compiler -- not the programmer -- to verify the types and catch simple mistakes ahead of time. As a result, I usually go out of my way to make dynamic languages as strict as possible: using TypeScript instead of JavaScript, setting Pylance to strict mode for Python, and now, setting the Monkey to strict for Monkey C. These always come with some sort of inconvenience you need to account for, but the safety they provide and the time they save you from debugging is always worth the effort of maintaining type safe code. Monkey C really made me rethink this though.
 
@@ -37,15 +39,11 @@ To this very day, I only know of four possible flags for the `:typecheck` annota
 
 I wish there was one for disabling initialized checks, but alas there is none I could find -- emphasis on the word find. Hence, you may notice my codebase's models have a healthy slathering of `(:initialized)` annotations in them, as there wasn't a great alternative. With a newfound wake up call, I knew making the next part of this project was going to be potentially the most gruesome.
 
-## Resources
+## Creation
+
+### Resources
 
 Resources are perhaps the most limiting facet of Monkey C, particularly when it comes to creating a project as resource intensive as mine. Just for sprites alone I knew I would have at least 800. I could do some tricks to help me reduce their size, but there was no getting around the fact that I needed to be careful about how I loaded the bitmaps themselves into RAM.
-
-# Notes
-
-- Changing the color
-    - Pure black and white
-    - Artistic rendering based on restriction
 
 - No dynamic loading
     - Must have a reference to each resource at build time
@@ -59,7 +57,33 @@ Resources are perhaps the most limiting facet of Monkey C, particularly when it 
     - Make sprite sheets to limit resource overhead
 - No line-by-line loading
     - Data needs to be chunked into strings and decompressed using ByteArray
+    - Off64
+
+### APIs
 
 - No drawBitmap2
     - Only realized after crafting the perfect system
     - Need to store double the sprites just to reflect them
+
+### Art
+
+- Changing the color
+    - Pure black and white
+    - Artistic rendering based on restriction
+
+- Biomes
+    - Separation of psmd locations by tileset
+    - Reorganized based on names
+
+### Game Design
+
+- Split all mechanics and all tracking
+    - Try and try until something works
+
+## Maintenance
+
+### Support
+
+### Legal
+
+# Notes

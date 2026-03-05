@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 from typing import Callable
 
@@ -8,7 +6,8 @@ from cv2.typing import MatLike
 import numpy as np
 import numpy.typing as npt
 
-from loader import import_sprites
+import scripts.sprites.sprite as sprite
+import scripts.utils.paths as paths
 
 UInt8Array = npt.NDArray[np.uint8]
 BoolArray = npt.NDArray[np.bool_]
@@ -147,12 +146,13 @@ def median_pixel_redraw_details(
     return binary
 
 
-if __name__ == "__main__":
-    output_path = "scripts/output/recolor/"
+def recolor_sprites():
+    output_path = f"{paths.OUTPUT}/recolor/"
     os.makedirs(output_path, exist_ok=True)
 
-    sprites = import_sprites()
-    for sprite in sprites:
-        inp: str = sprite.get_path()
-        outp: str = f"{output_path}{sprite.get_target()}.png"
-        process_image(inp, outp, sprite.reflect, median_pixel_redraw_details)
+    sprites = sprite.load_sprites()
+    for spr in sprites:
+        inp: str = spr.get_path()
+        outp: str = f"{output_path}{spr.get_target()}.png"
+        process_image(inp, outp, spr.reflect, median_pixel_redraw_details)
+        # TODO: white outline

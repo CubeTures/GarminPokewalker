@@ -10,6 +10,8 @@
     - https://baselight.app/u/kaggle/dataset/maca11_all_pokemon_dataset
 - Mystery Dungeon Map
     - https://eddyk28.github.io/PMD%20Map/
+    - https://github.com/EddyK28/EddyK28.github.io/blob/master/PMD%20Map/index.html
+    - https://strategywiki.org/wiki/Pok%C3%A9mon_Super_Mystery_Dungeon/Dungeons
 - Original Mechanics
     - https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9walker
 - Reverse Engineer of Garmin API
@@ -78,7 +80,6 @@
     - Elevation
     - Activity Minutes
         - Based on week
-        -
 - Complications
     - Steps
     - Floors climbed
@@ -197,3 +198,9 @@ typedef struct {
         - sprite
         - environment
     - interaction // menus
+
+# Areas
+
+- Forest
+    - Open Pass
+    - Lush Forest
