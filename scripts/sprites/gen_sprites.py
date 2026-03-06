@@ -81,5 +81,5 @@ def gen_sprites_mc():
 
 
 def gen_sprites():
-    gen_sprites_mc()
     gen_sprites_xml()
+    gen_sprites_mc()

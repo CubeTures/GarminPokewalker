@@ -10,4 +10,7 @@ module Constants {
         POS_5 = 146,
         POS_6 = 175,
     }
+
+    const START_INDEX_SIZE = 2;
+    const STRING_LENGTH_SIZE = 2;
 }

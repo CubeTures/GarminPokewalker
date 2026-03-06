@@ -3,7 +3,7 @@ from bs4 import Tag, Comment
 from typing import Any
 
 import scripts.utils.paths as paths
-import scripts.parse.html as html
+import scripts.scrape.html as html
 import scripts.utils.utils as utils
 
 

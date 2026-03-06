@@ -22,8 +22,11 @@ module Views {
             pokemon.sid = 0;
             pokemon.form = 0;
 
-            forest =  WatchUi.loadResource(Rez.Drawables.forest) as Graphics.BitmapType; 
-            mask = WatchUi.loadResource(Rez.Drawables.mask) as Graphics.BitmapType; 
+            forest =
+                WatchUi.loadResource(Rez.Drawables.forest) as
+                Graphics.BitmapType;
+            mask =
+                WatchUi.loadResource(Rez.Drawables.mask) as Graphics.BitmapType;
 
             stepsIcon =
                 WatchUi.loadResource(Rez.Drawables.footprints) as
@@ -45,6 +48,7 @@ module Views {
         }
 
         function onShow() as Void {
+            View.onShow();
             clock.onShow();
             Visuals.loadWeatherIcon();
             loadSprites();
@@ -74,6 +78,7 @@ module Views {
         }
 
         function onHide() as Void {
+            View.onHide();
             clock.onHide();
             spriteLeft = null;
             spriteRight = null;

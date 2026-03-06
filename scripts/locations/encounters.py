@@ -3,7 +3,7 @@ import time
 from bs4 import Tag
 
 import scripts.utils.paths as paths
-import scripts.parse.html as html
+import scripts.scrape.html as html
 import scripts.scrape.fetch as fetch
 import scripts.utils.utils as utils
 

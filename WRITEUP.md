@@ -39,6 +39,16 @@ To this very day, I only know of four possible flags for the `:typecheck` annota
 
 I wish there was one for disabling initialized checks, but alas there is none I could find -- emphasis on the word find. Hence, you may notice my codebase's models have a healthy slathering of `(:initialized)` annotations in them, as there wasn't a great alternative. With a newfound wake up call, I knew making the next part of this project was going to be potentially the most gruesome.
 
+- horrible idea for initialized check
+    - onShow is told to be where to load resources
+    - onHide where you deallocate them
+    - completely contradicts initialized
+
+- null checks are broken and suck
+    - typechecker freaks out at a `if (x != null) {}`
+    - don't make variable null as a result
+    - now can't deallocate in onHide without `(:typecheck(false))`
+
 ## Creation
 
 ### Resources
@@ -70,6 +80,9 @@ Resources are perhaps the most limiting facet of Monkey C, particularly when it 
 - Changing the color
     - Pure black and white
     - Artistic rendering based on restriction
+
+- Icons
+    - Pixel Princess
 
 - Biomes
     - Separation of psmd locations by tileset

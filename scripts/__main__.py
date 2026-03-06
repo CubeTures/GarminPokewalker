@@ -5,7 +5,7 @@ from scripts.sprites.pack import pack_sprites
 from scripts.sprites.gen_sprites import gen_sprites
 from scripts.locations.map import parse_map_locations
 from scripts.locations.encounters import scrape_encounters, sort_encounters_by_stats
-from scripts.locations.gen_locations import gen_location_strings
+from scripts.locations.gen_locations import gen_location_strings, gen_map_coordinates
 
 
 def _parse_args():
@@ -56,6 +56,8 @@ def _locations(args: argparse.Namespace):
     print("Sorted encounters")
     gen_location_strings()
     print("Generated location resources")
+    gen_map_coordinates()
+    print("Generated map coordinates")
     print("* Completed locations module")
 
 

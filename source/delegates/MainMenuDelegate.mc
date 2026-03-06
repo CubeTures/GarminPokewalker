@@ -9,10 +9,11 @@ module Delegates {
         }
 
         function onMenuItem(item as Symbol) as Void {
-            if (item == :item_1) {
-                System.println("item 1");
-            } else if (item == :item_2) {
-                System.println("item 2");
+            if (item == :menu_map) {
+                var view = new Views.MapView();
+                var delegate = new Delegates.MapDelegate(view);
+                WatchUi.pushView(view, delegate, WatchUi.SLIDE_UP);
+                // System.println("Menu Map");
             }
         }
     }
