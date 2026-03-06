@@ -76,7 +76,7 @@ def _compute_global_binary_map(
     return color_map
 
 
-def median_color_threshold(bgr: UInt8Array, alpha: UInt8Array) -> UInt8Array:
+def median_color_threshold(bgr: MatLike, alpha: MatLike) -> UInt8Array:
     mask: BoolArray = alpha > 0
     color_map = _compute_global_binary_map(bgr, mask)
 

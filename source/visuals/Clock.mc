@@ -12,15 +12,15 @@ module Visuals {
             date = new WatchUi.Text({
                 :color => Graphics.COLOR_WHITE,
                 :font => Graphics.FONT_MEDIUM,
-                :locX => Constants.POS_3 + Constants.POS_STEP / 3,
-                :locY => Constants.POS_0,
+                :locX => K.POS_3 + K.POS_STEP / 3,
+                :locY => K.POS_0,
                 :justification => Graphics.TEXT_JUSTIFY_RIGHT,
             });
             clock = new WatchUi.Text({
                 :color => Graphics.COLOR_WHITE,
                 :font => Graphics.FONT_NUMBER_THAI_HOT,
-                :locX => Constants.POS_3 + Constants.POS_STEP / 3,
-                :locY => Constants.POS_1 - Constants.POS_STEP / 3,
+                :locX => K.POS_3 + K.POS_STEP / 3,
+                :locY => K.POS_1 - K.POS_STEP / 3,
                 :justification => Graphics.TEXT_JUSTIFY_RIGHT,
             });
         }

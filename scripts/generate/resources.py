@@ -41,20 +41,23 @@ def create_resources_xml(
     if legend is not None:
         xml_lines.append(f"<!-- {legend} -->")
     for i, line in enumerate(lines):
-        xml_lines.append(f"""<string id="{name}_{i}">{line.decode()}</string>""")
-    xml.gen_xml(f"{paths.RESOURCES}/strings/{name}.xml", xml_lines)
+        xml_lines.append(
+            f"""<string id="{utils.snake_case(name)}_{i}">{line.decode()}</string>"""
+        )
+    xml.gen_xml(f"{paths.RESOURCES}/strings/{utils.snake_case(name)}.xml", xml_lines)
 
     return result
 
 
 def create_resources_mc(name: str, groups: list[int]):
     conditions = [
-        (f"(i <= {group})", f"return Rez.Strings.{name}_{i};")
+        (f"i <= {group}", f"return Rez.Strings.{utils.snake_case(name)}_{i};")
         for i, group in enumerate(groups)
     ]
     ifs = mc.gen_if(conditions, "return Rez.Strings.string_unknown;")
     func = mc.gen_func(f"load{utils.capitalize(name)}", [ifs], "i as Number")
-    mod = mc.gen_mod("Generated", [func])
+    count = f"\tvar num{utils.capitalize(name)} as Number = {groups[-1]};"
+    mod = mc.gen_mod("Generated", [count, func])
     utils.write_file(f"{paths.SOURCE}/Load{utils.capitalize(name)}.mc", mod)
 
 

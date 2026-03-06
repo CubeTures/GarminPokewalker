@@ -3,9 +3,9 @@ from typing import Callable
 from scripts.sprites.recolor import recolor_sprites
 from scripts.sprites.pack import pack_sprites
 from scripts.sprites.gen_sprites import gen_sprites
-from scripts.locations.map import parse_map_locations
+from scripts.locations.map import parse_location_coords
 from scripts.locations.encounters import scrape_encounters, sort_encounters_by_stats
-from scripts.locations.gen_locations import gen_location_strings, gen_map_coordinates
+from scripts.locations.gen_locations import gen_location_strings, gen_location_coords, gen_continent_strings, gen_continent_coords
 
 
 def _parse_args():
@@ -47,7 +47,7 @@ def _sprites(args: argparse.Namespace):
 
 def _locations(args: argparse.Namespace):
     print("* Started locations module")
-    parse_map_locations()
+    parse_location_coords()
     print("Parsed game locations")
     if not args.simple:
         scrape_encounters()
@@ -55,9 +55,13 @@ def _locations(args: argparse.Namespace):
     sort_encounters_by_stats()
     print("Sorted encounters")
     gen_location_strings()
-    print("Generated location resources")
-    gen_map_coordinates()
-    print("Generated map coordinates")
+    print("Generated location strings")
+    gen_location_coords()
+    print("Generated location coordinates")
+    gen_continent_strings()
+    print("Generated continent strings")
+    gen_continent_coords()
+    print("Generated continent coordinates")
     print("* Completed locations module")
 
 

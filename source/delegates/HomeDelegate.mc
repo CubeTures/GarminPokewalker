@@ -1,6 +1,5 @@
 import Toybox.Lang;
 using Toybox.WatchUi;
-using Toybox.System;
 
 module Delegates {
     class HomeDelegate extends WatchUi.BehaviorDelegate {

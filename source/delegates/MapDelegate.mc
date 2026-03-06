@@ -1,6 +1,5 @@
 import Toybox.Lang;
 using Toybox.WatchUi;
-using Toybox.System;
 
 module Delegates {
     class MapDelegate extends WatchUi.BehaviorDelegate {
@@ -11,15 +10,24 @@ module Delegates {
             self.view = view;
         }
 
-        function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
-            if (keyEvent.getKey() == WatchUi.KEY_UP) {
-                view.mapManager.updateLocation(-1);
-            } else if (keyEvent.getKey() == WatchUi.KEY_DOWN) {
-                view.mapManager.updateLocation(1);
-                WatchUi.requestUpdate();
-            }
-
+        function onPreviousPage() as Boolean {
+            view.mapManager.update(-1);
+            WatchUi.requestUpdate();
             return true;
+        }
+
+        function onNextPage() as Boolean {
+            view.mapManager.update(1);
+            WatchUi.requestUpdate();
+            return true;
+        }
+
+        function onSelect() as Boolean {
+            return view.mapManager.select();
+        }
+
+        function onBack() as Boolean {
+            return view.mapManager.back();
         }
     }
 }

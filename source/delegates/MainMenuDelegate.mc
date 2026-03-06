@@ -1,5 +1,4 @@
 import Toybox.Lang;
-using Toybox.System;
 using Toybox.WatchUi;
 
 module Delegates {
@@ -13,7 +12,6 @@ module Delegates {
                 var view = new Views.MapView();
                 var delegate = new Delegates.MapDelegate(view);
                 WatchUi.pushView(view, delegate, WatchUi.SLIDE_UP);
-                // System.println("Menu Map");
             }
         }
     }

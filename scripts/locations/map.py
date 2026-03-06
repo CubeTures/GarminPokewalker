@@ -16,7 +16,7 @@ GAME_MAP = {
 }
 
 
-def parse_map_locations() -> None:
+def parse_location_coords() -> None:
     soup = html.load_soup(f"{paths.DATA}/map.html")
     data: list[dict[str, Any]] = []
 
@@ -49,4 +49,4 @@ def parse_map_locations() -> None:
                 }
             )
 
-    utils.write_file(f"{paths.OUTPUT}/locations/map_locations.json", json.dumps(data))
+    utils.write_file(f"{paths.OUTPUT}/locations/location_coords.json", json.dumps(data))

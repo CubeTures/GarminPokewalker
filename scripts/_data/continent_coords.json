@@ -1,0 +1,8 @@
+[
+    {"name": "Water Continent", "x": 78, "y": 49},
+    {"name": "Air Continent", "x": 124, "y": 39},
+    {"name": "Grass Continent", "x": 135, "y": 91},
+    {"name": "Mist Continent", "x": 33, "y": 49},
+    {"name": "Sand Continent", "x": 27, "y": 107},
+    {"name": "Special Locations", "x": 60, "y": 104}
+]

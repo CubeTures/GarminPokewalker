@@ -1,6 +1,8 @@
-module Constants {
+// "konstants"
+module K {
     const POS_STEP = 29;
-    
+    const POS_CENTER = 88;
+
     enum Position {
         POS_0 = 1,
         POS_1 = 30,
@@ -13,4 +15,6 @@ module Constants {
 
     const START_INDEX_SIZE = 2;
     const STRING_LENGTH_SIZE = 2;
+
+    const STRING_UNK = "UNKNOWN";
 }

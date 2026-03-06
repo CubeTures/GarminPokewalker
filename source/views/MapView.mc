@@ -2,7 +2,6 @@ import Toybox.Lang;
 using Toybox.Graphics;
 using Toybox.WatchUi;
 using Toybox.StringUtil;
-using Toybox.System;
 
 module Views {
     class MapView extends WatchUi.View {
@@ -22,7 +21,7 @@ module Views {
                 :color => Graphics.COLOR_WHITE,
                 :justification => Graphics.TEXT_JUSTIFY_CENTER,
                 :font => Graphics.FONT_SMALL,
-                :locX => Constants.POS_2 + 28,
+                :locX => K.POS_2 + 28,
                 :locY => 146,
             });
         }
@@ -32,9 +31,10 @@ module Views {
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
             dc.clear();
             mapManager.draw(dc);
+            Visuals.drawBulb(dc);
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
             dc.fillRectangle(0, 141, 176, 35);
-            text.setText(mapManager.locationName);
+            text.setText(mapManager.getName());
             text.draw(dc);
         }
 

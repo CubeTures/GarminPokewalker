@@ -3,6 +3,7 @@
     <bitmap id="unknown" filename="unknown.png" compress="true" dithering="none" />
     <bitmap id="weather" filename="weather.png" compress="true" />
     <bitmap id="map" filename="map.png" compress="true" />
+    <bitmap id="map_sm" filename="map_sm.png" compress="true" />
     <bitmap id="footprints" filename="footprints.png" compress="true" />
     <bitmap id="forest" filename="forest.png" compress="true" />
     <bitmap id="mask" filename="mask.png" compress="true" />

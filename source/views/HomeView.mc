@@ -1,7 +1,6 @@
 import Toybox.Lang;
 using Toybox.Graphics;
 using Toybox.WatchUi;
-using Toybox.System;
 using Toybox.ActivityMonitor;
 
 module Views {
@@ -35,7 +34,7 @@ module Views {
                 :color => Graphics.COLOR_WHITE,
                 :justification => Graphics.TEXT_JUSTIFY_LEFT,
                 :font => Graphics.FONT_SMALL,
-                :locX => Constants.POS_2 + 28,
+                :locX => K.POS_2 + 28,
                 :locY => 146,
             });
             var info = ActivityMonitor.getInfo();
@@ -73,7 +72,7 @@ module Views {
                 spriteRight.drawSprite(dc, 68 + 20, 113);
             }
 
-            dc.drawBitmap(Constants.POS_2, 146, stepsIcon);
+            dc.drawBitmap(K.POS_2, 146, stepsIcon);
             stepsText.draw(dc);
         }
 

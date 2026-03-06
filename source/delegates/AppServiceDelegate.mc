@@ -1,8 +1,6 @@
-using Toybox.System;
-
 module Delegates {
     (:background)
-    class AppServiceDelegate extends System.ServiceDelegate {
+    class AppServiceDelegate extends $.Toybox.System.ServiceDelegate {
         function initialize() {
             ServiceDelegate.initialize();
         }
