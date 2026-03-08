@@ -10,19 +10,19 @@ module Delegates {
         function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
             switch (keyEvent.getKey()) {
                 case WatchUi.KEY_UP:
-                    return up();
+                    return onUp();
                 case WatchUi.KEY_DOWN:
-                    return down();
+                    return onDown();
                 default:
                     return false;
             }
         }
 
-        function up() as Boolean {
+        function onUp() as Boolean {
             return false;
         }
 
-        function down() as Boolean {
+        function onDown() as Boolean {
             return false;
         }
     }

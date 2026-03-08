@@ -61,8 +61,9 @@ module Views {
             dc.drawBitmap(0, 85, forest);
             dc.drawBitmap(0, 0, mask);
             // Visuals.drawGrid(dc);
-            Visuals.drawBulb(dc);
-            Visuals.drawWeather(dc);
+            var icon = Visuals.loadWeatherIcon();
+            Visuals.subScreen.setIcon(icon);
+            Visuals.subScreen.draw(dc);
             clock.draw(dc);
 
             if (spriteLeft != null) {

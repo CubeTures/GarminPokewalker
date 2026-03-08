@@ -20,7 +20,7 @@ module Delegates {
             return true;
         }
 
-        function up() as Boolean {
+        function onUp() as Boolean {
             view.pokemon.sid--;
             if (view.pokemon.sid < 0) {
                 view.pokemon.sid = 806;
@@ -30,7 +30,7 @@ module Delegates {
             return true;
         }
 
-        function down() as Boolean {
+        function onDown() as Boolean {
             view.pokemon.sid++;
             if (view.pokemon.sid > 806) {
                 view.pokemon.sid = 0;

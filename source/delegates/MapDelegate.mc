@@ -10,12 +10,12 @@ module Delegates {
             self.view = view;
         }
 
-        function up() as Boolean {
+        function onUp() as Boolean {
             view.mapManager.update(-1);
             return true;
         }
 
-        function down() as Boolean {
+        function onDown() as Boolean {
             view.mapManager.update(1);
             return true;
         }

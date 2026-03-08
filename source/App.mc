@@ -25,6 +25,7 @@ class App extends Application.AppBase {
     (:typecheck(disableBackgroundCheck))
     function getInitialView() as [WatchUi.Views] or
         [WatchUi.Views, WatchUi.InputDelegates] {
+        Visuals.subScreen = new Visuals.SubScreen();
         var view = new Views.HomeView();
         var delegate = new Delegates.HomeDelegate(view);
         return [view, delegate];

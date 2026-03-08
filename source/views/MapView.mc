@@ -35,7 +35,7 @@ module Views {
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
             dc.clear();
             mapManager.draw(dc);
-            Visuals.drawBulb(dc);
+            Visuals.subScreen.draw(dc);
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
             dc.fillRectangle(0, 142, 176, 34);
             text.setText(mapManager.getName());
