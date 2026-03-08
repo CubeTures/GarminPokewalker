@@ -33,7 +33,7 @@ def gen_location_coords():
     resources.create_resources(
         "locationCoords",
         entries,
-        "7 bytes: 1 - continent id, 2 - location id, 2 - x pos, 2 - y pos",
+        "Entry (7 Bytes): Continent ID (1), Location ID (2), X (2), Y (2)",
     )
 
 
@@ -56,5 +56,5 @@ def gen_continent_coords():
     resources.create_resources(
         "continentCoords",
         entries,
-        "5 bytes: 1 - continent id, 2 - x pos, 2 - y pos",
+        "Entry (5 Bytes): Continent ID (2), X (2), Y (2)",
     )

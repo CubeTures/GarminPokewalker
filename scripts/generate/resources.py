@@ -10,34 +10,42 @@ BYTE_THRESHOLD = (4 << 10) - 4
 def create_resources_xml(
     name: str,
     entries: list[str],
+    size: int = 0,
     legend: str | None = None,
 ) -> list[int]:
     result: list[int] = []
     i = 0
+    first = 0
 
     lines: list[bytearray] = []
-    line: bytearray = off64.encode(0, 2)
+    line: bytearray = off64.encode(0, 2) + off64.encode(size, 2)
     used_bytes = 0
 
     for entry in entries:
         length = len(entry)
         assert length < BYTE_THRESHOLD
         if length + used_bytes >= BYTE_THRESHOLD:
+            line[2:2] = off64.encode(i - first, 2)
             line.extend(off64.encode(0, 2))
             lines.append(line)
-            line = off64.encode(i, 2)
+            line = off64.encode(i, 2) + off64.encode(size, 2)
             used_bytes = 0
+            first = i
             result.append(i)
 
         line.extend(entry.encode())
         used_bytes += length
         i += 1
 
+    line[2:2] = off64.encode(i - first, 2)
     line.extend(off64.encode(0, 2))
     lines.append(line)
     result.append(i)
 
     xml_lines: list[str] = []
+    xml_lines.append(
+        f"<!-- Meta (6 Bytes): Start Index (2), Number of Entries (2), Entry Length (0 if String else 2) -->"
+    )
     if legend is not None:
         xml_lines.append(f"<!-- {legend} -->")
     for i, line in enumerate(lines):
@@ -62,5 +70,5 @@ def create_resources_mc(name: str, groups: list[int]):
 
 
 def create_resources(name: str, entries: list[str], legend: str | None = None):
-    groups = create_resources_xml(name, entries, legend)
+    groups = create_resources_xml(name, entries, len(entries[0]), legend)
     create_resources_mc(name, groups)

@@ -8,7 +8,9 @@ module Views {
         (:initialized)
         var mapManager as Managers.MapManager;
         (:initialized)
-        var text as WatchUi.Text;
+        var text as Visuals.Marquee;
+        (:initialized)
+        var frameClock as Visuals.FrameClock;
 
         function initialize() {
             View.initialize();
@@ -17,13 +19,15 @@ module Views {
         function onShow() {
             View.onShow();
             mapManager = new Managers.MapManager();
-            text = new WatchUi.Text({
+            text = new Visuals.Marquee({
                 :color => Graphics.COLOR_WHITE,
-                :justification => Graphics.TEXT_JUSTIFY_CENTER,
                 :font => Graphics.FONT_SMALL,
-                :locX => K.POS_2 + 28,
-                :locY => 146,
+                :locX => 40,
+                :locY => 142,
+                :width => 96,
+                :height => 34,
             });
+            frameClock = new Visuals.FrameClock(20);
         }
 
         function onUpdate(dc as Graphics.Dc) as Void {
@@ -33,7 +37,7 @@ module Views {
             mapManager.draw(dc);
             Visuals.drawBulb(dc);
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-            dc.fillRectangle(0, 141, 176, 35);
+            dc.fillRectangle(0, 142, 176, 34);
             text.setText(mapManager.getName());
             text.draw(dc);
         }
@@ -43,6 +47,8 @@ module Views {
             View.onHide();
             mapManager = null;
             text = null;
+            frameClock.stop();
+            frameClock = null;
         }
     }
 }

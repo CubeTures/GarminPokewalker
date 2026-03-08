@@ -2,23 +2,21 @@ import Toybox.Lang;
 using Toybox.WatchUi;
 
 module Delegates {
-    class MapDelegate extends WatchUi.BehaviorDelegate {
+    class MapDelegate extends KeyDelegate {
         var view as Views.MapView;
 
         function initialize(view as Views.MapView) {
-            BehaviorDelegate.initialize();
+            KeyDelegate.initialize();
             self.view = view;
         }
 
-        function onPreviousPage() as Boolean {
+        function up() as Boolean {
             view.mapManager.update(-1);
-            WatchUi.requestUpdate();
             return true;
         }
 
-        function onNextPage() as Boolean {
+        function down() as Boolean {
             view.mapManager.update(1);
-            WatchUi.requestUpdate();
             return true;
         }
 

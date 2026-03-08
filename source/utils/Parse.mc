@@ -16,20 +16,23 @@ module Utils {
     }
 
     function getNthString(bytes as ByteArray, n as Number) as String {
-        var index = Utils.decodeOff64(bytes, 0, K.START_INDEX_SIZE);
-        var pos = K.START_INDEX_SIZE;
-        while (index < n) {
+        var i = Utils.decodeOff64(bytes, 0, K.META_START_INDEX_SIZE);
+        var pos = K.META_SIZE;
+
+        while (i < n) {
             var len = Utils.decodeOff64(bytes, pos, K.STRING_LENGTH_SIZE);
             pos += K.STRING_LENGTH_SIZE + len;
-            index += 1;
+            i += 1;
             if (len == 0) {
                 return (
                     WatchUi.loadResource(Rez.Strings.string_unknown) as String
                 );
             }
         }
+
         var len = Utils.decodeOff64(bytes, pos, K.STRING_LENGTH_SIZE);
         pos += K.STRING_LENGTH_SIZE;
+
         return loadString(bytes, pos, len);
     }
 

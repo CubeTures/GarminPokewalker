@@ -13,7 +13,11 @@ module K {
         POS_6 = 175,
     }
 
-    const START_INDEX_SIZE = 2;
+    const META_START_INDEX_SIZE = 2;
+    const META_NUM_ENTRIES_SIZE = 2;
+    const META_ENTRY_LEN_SIZE = 2;
+    const META_SIZE =
+        META_START_INDEX_SIZE + META_NUM_ENTRIES_SIZE + META_ENTRY_LEN_SIZE;
     const STRING_LENGTH_SIZE = 2;
 
     const STRING_UNK = "UNKNOWN";

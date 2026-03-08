@@ -2,11 +2,11 @@ import Toybox.Lang;
 using Toybox.WatchUi;
 
 module Delegates {
-    class HomeDelegate extends WatchUi.BehaviorDelegate {
+    class HomeDelegate extends KeyDelegate {
         var view as Views.HomeView;
 
         function initialize(view as Views.HomeView) {
-            BehaviorDelegate.initialize();
+            KeyDelegate.initialize();
             self.view = view;
         }
 
@@ -20,24 +20,23 @@ module Delegates {
             return true;
         }
 
-        function onKeyPressed(keyEvent as WatchUi.KeyEvent) as Boolean {
-            if (keyEvent.getKey() == WatchUi.KEY_UP) {
-                view.pokemon.sid--;
-                if (view.pokemon.sid < 0) {
-                    view.pokemon.sid = 806;
-                }
-                view.loadSprites();
-                WatchUi.requestUpdate();
+        function up() as Boolean {
+            view.pokemon.sid--;
+            if (view.pokemon.sid < 0) {
+                view.pokemon.sid = 806;
             }
-            if (keyEvent.getKey() == WatchUi.KEY_DOWN) {
-                view.pokemon.sid++;
-                if (view.pokemon.sid > 806) {
-                    view.pokemon.sid = 0;
-                }
-                view.loadSprites();
-                WatchUi.requestUpdate();
-            }
+            view.loadSprites();
+            WatchUi.requestUpdate();
+            return true;
+        }
 
+        function down() as Boolean {
+            view.pokemon.sid++;
+            if (view.pokemon.sid > 806) {
+                view.pokemon.sid = 0;
+            }
+            view.loadSprites();
+            WatchUi.requestUpdate();
             return true;
         }
     }

@@ -28,14 +28,21 @@ module Visuals {
         function draw(dc as Graphics.Dc) as Void {
             if (clock != null) {
                 var time = System.getClockTime();
+                
+                var hr = time.hour % 12;
+                if (hr == 0) {
+                    hr = 12;
+                }
                 var min = time.min;
                 var minStr = min.toString();
                 if (min < 10) {
                     minStr = "0" + minStr;
                 }
-                clock.setText((time.hour % 12) + ":" + minStr);
+
+                clock.setText(hr + ":" + minStr);
                 clock.draw(dc);
             }
+
             if (date != null) {
                 var today = Calendar.info(Time.now(), Time.FORMAT_MEDIUM);
                 date.setText(
