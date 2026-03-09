@@ -1,18 +1,18 @@
 import scripts.utils.paths as paths
-import scripts.generate.strings as strings
+import scripts.generate.variable as variable
 import scripts.generate.resources as resources
 import scripts.utils.utils as utils
 import scripts.utils.off64 as off64
 
 
 def gen_location_strings():
-    locations = utils.read_json(f"{paths.LOCATIONS}/location_coords.json")
+    locations = utils.read_json(f"{paths.LOCATIONS}/locations.json")
     locations = [loc for loc in locations if loc["game"] == "smd"]
-    strings.create_strings("locationNames", [loc["location"] for loc in locations])
+    variable.create_variable("locationNames", [loc["location"] for loc in locations])
 
 
 def gen_location_coords():
-    locations = utils.read_json(f"{paths.LOCATIONS}/location_coords.json")
+    locations = utils.read_json(f"{paths.LOCATIONS}/locations.json")
     locations = [loc for loc in locations if loc["game"] == "smd"]
 
     continent_i = 0
@@ -24,10 +24,10 @@ def gen_location_coords():
             continent_i += 1
         ci = continents[loc["continent"]]
         output: str = ""
-        output += off64.encode(ci, 1).decode()
-        output += off64.encode(i, 2).decode()
-        output += off64.encode(int(loc["x"]), 2).decode()
-        output += off64.encode(int(loc["y"]), 2).decode()
+        output += off64.enc_str(ci, 1)
+        output += off64.enc_str(i, 2)
+        output += off64.enc_str(int(loc["x"]), 2)
+        output += off64.enc_str(int(loc["y"]), 2)
         entries.append(output)
 
     resources.create_resources(
@@ -39,7 +39,7 @@ def gen_location_coords():
 
 def gen_continent_strings():
     continents = utils.read_json(f"{paths.DATA}/continent_coords.json")
-    strings.create_strings("continentNames", [con["name"] for con in continents])
+    variable.create_variable("continentNames", [con["name"] for con in continents])
 
 
 def gen_continent_coords():
@@ -48,9 +48,9 @@ def gen_continent_coords():
     entries: list[str] = []
     for i, con in enumerate(continents):
         output = ""
-        output += off64.encode(i, 1).decode()
-        output += off64.encode(int(con["x"]), 2).decode()
-        output += off64.encode(int(con["y"]), 2).decode()
+        output += off64.enc_str(i, 1)
+        output += off64.enc_str(int(con["x"]), 2)
+        output += off64.enc_str(int(con["y"]), 2)
         entries.append(output)
 
     resources.create_resources(

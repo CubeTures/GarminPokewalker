@@ -4,14 +4,14 @@ import scripts.generate.mc as mc
 import scripts.generate.xml as xml
 import scripts.utils.off64 as off64
 
-BYTE_THRESHOLD = (4 << 10) - 4
+BYTE_THRESHOLD = (2 << 10)
 
 
 def create_resources_xml(
     name: str,
     entries: list[str],
     size: int = 0,
-    legend: str | None = None,
+    legend: list[str] = [],
 ) -> list[int]:
     result: list[int] = []
     i = 0
@@ -44,10 +44,11 @@ def create_resources_xml(
 
     xml_lines: list[str] = []
     xml_lines.append(
-        f"<!-- Meta (6 Bytes): Start Index (2), Number of Entries (2), Entry Length (0 if String else 2) -->"
+        f"<!-- Meta (6 Bytes): Start Index (2), Number of Entries (2), Entry Length (2; =0 if Variable) -->"
     )
-    if legend is not None:
-        xml_lines.append(f"<!-- {legend} -->")
+    for l in legend:
+        xml_lines.append(f"<!-- {l} -->")
+    xml_lines.append("")
     for i, line in enumerate(lines):
         xml_lines.append(
             f"""<string id="{utils.snake_case(name)}_{i}">{line.decode()}</string>"""
@@ -69,6 +70,6 @@ def create_resources_mc(name: str, groups: list[int]):
     utils.write_file(f"{paths.SOURCE}/Load{utils.capitalize(name)}.mc", mod)
 
 
-def create_resources(name: str, entries: list[str], legend: str | None = None):
-    groups = create_resources_xml(name, entries, len(entries[0]), legend)
+def create_resources(name: str, entries: list[str], legend: str):
+    groups = create_resources_xml(name, entries, len(entries[0]), [legend])
     create_resources_mc(name, groups)

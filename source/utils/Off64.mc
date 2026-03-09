@@ -32,4 +32,21 @@ module Utils {
         }
         return result;
     }
+
+    function decodeArray(
+        bytes as ByteArray,
+        offset as Number,
+        entryLength as Number
+    ) as Array<Number> {
+        var len = decodeOff64(bytes, offset + 0, 2);
+        var arr = new Array<Number>[len];
+        for (var i = 0; i < len; i++) {
+            arr[i] = decodeOff64(
+                bytes,
+                offset + 2 + entryLength * i,
+                entryLength
+            );
+        }
+        return arr;
+    }
 }

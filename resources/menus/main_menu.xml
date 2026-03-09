@@ -1,0 +1,7 @@
+<menu2 id="MainMenu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <menu-item id="main_menu_map" label="Map" />
+    <menu-item id="main_menu_search" label="Search" />
+    <menu-item id="main_menu_bag" label="Bag" />
+    <menu-item id="main_menu_pc" label="PC" />
+    <menu-item id="main_menu_pokedex" label="Pokedex" />
+</menu2>

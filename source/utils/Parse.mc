@@ -15,24 +15,30 @@ module Utils {
         );
     }
 
-    function getNthString(bytes as ByteArray, n as Number) as String {
+    function getNthVariablePos(bytes as ByteArray, n as Number) as Number {
         var i = Utils.decodeOff64(bytes, 0, K.META_START_INDEX_SIZE);
         var pos = K.META_SIZE;
 
         while (i < n) {
-            var len = Utils.decodeOff64(bytes, pos, K.STRING_LENGTH_SIZE);
-            pos += K.STRING_LENGTH_SIZE + len;
+            var len = Utils.decodeOff64(bytes, pos, K.VARIABLE_LENGTH_SIZE);
+            pos += K.VARIABLE_LENGTH_SIZE + len;
             i += 1;
             if (len == 0) {
-                return (
-                    WatchUi.loadResource(Rez.Strings.string_unknown) as String
-                );
+                return -1;
             }
         }
 
-        var len = Utils.decodeOff64(bytes, pos, K.STRING_LENGTH_SIZE);
-        pos += K.STRING_LENGTH_SIZE;
+        return pos;
+    }
 
+    function getNthString(bytes as ByteArray, n as Number) as String {
+        var pos = getNthVariablePos(bytes, n);
+        if (pos == -1) {
+            return K.STRING_UNK;
+        }
+
+        var len = Utils.decodeOff64(bytes, pos, K.VARIABLE_LENGTH_SIZE);
+        pos += K.VARIABLE_LENGTH_SIZE;
         return loadString(bytes, pos, len);
     }
 

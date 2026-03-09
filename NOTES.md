@@ -36,6 +36,18 @@
     - Can use the mint icon as grass patch
     - Or can use random berries as "lure"
 
+- Continents and Locations have "unlock" conditions
+    - Display unlock condition with popup?
+        - Toast or confirmation?
+- Use WatchUi.animate instead of frames for marquee
+- Make the map location persistent
+    - Through session
+        - When going back from Location Menu, should be in same spot and start in location map
+        - When going to map, should default to current continent and location
+    - Through boot
+        - Needs to start at current continent and location
+        - Needs to be saved to disk
+
 # Mechanics
 
 ## Tenants
@@ -58,6 +70,48 @@
     - Candy can be used to raised iv of that specific pokemon
     - Possibly additional use for candy
 - 2400 pc slots
+
+### Items
+
+- use [b2w2 bag images](https://bulbapedia.bulbagarden.net/wiki/Bag#Differences_between_generations)
+
+items
+
+- other items
+- value items
+- shards
+- fossils
+- balls
+
+medicine
+
+- medicine
+- pokecandy
+- mints
+
+tms
+
+- tms
+
+battle items
+
+- battle items
+- held items
+- barries
+- gems
+- ev-enhancing
+- incense
+
+key
+
+- key items
+
+evolution items
+
+- evolution items
+- mega stones
+- plates
+- memories
 
 ### Gameplay Loop (No Activity)
 

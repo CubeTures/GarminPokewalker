@@ -8,8 +8,9 @@ A re-imagining of the [Pokewalker](https://bulbapedia.bulbagarden.net/wiki/Pok%C
 
 Without these references, this project would not have been possible. Thank you:
 
+- [PokeDB](https://pokedb.org/data-export), for their invaluable data sets;
 - [PokeSprite](https://github.com/msikma/pokesprite), for their extensive documentation and database of sprites;
-- [Garth](https://github.com/matin/garth), for documenting the Garmin Connect API (as the API is frustratingly [only available to businesses](https://developer.garmin.com/gc-developer-program/overview/));
+- [Garth](https://github.com/matin/garth), for documentation the Garmin Connect API;
 - And the [Garmin Forums](https://forums.garmin.com/developer/connect-iq/f/discussion/) and their lovely regulars, as they were basically the only source of knowledge outside of the [documentation](https://developer.garmin.com/connect-iq/overview/) I could rely on.
 
 ## Contributing

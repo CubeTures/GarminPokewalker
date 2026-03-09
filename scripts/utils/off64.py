@@ -31,3 +31,6 @@ def bytes_needed(n: int) -> int:
     if n == 0:
         return 1
     return math.ceil(math.log(n + 1, 64))
+
+def enc_str(n: int, numBytes: int) -> str:
+    return encode(n, numBytes).decode()

@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import unicodedata
 from typing import Any
 
 
@@ -32,3 +33,7 @@ def snake_case(string: str) -> str:
         re.sub(r"(?<=[a-z])(?=[A-Z])|[^a-zA-Z]", " ", string).strip().replace(" ", "_")
     )
     return "".join(string.lower())
+
+
+def to_ascii(s: str) -> str:
+    return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")

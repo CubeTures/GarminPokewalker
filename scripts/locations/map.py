@@ -39,6 +39,7 @@ def parse_location_coords() -> None:
             location = location.split("(")[0].strip()
             style: str = marker.get("style", "")  # type: ignore[assignment]
             x, y = html.extract_marker_position(style)
+            href = link.get("href")
             data.append(
                 {
                     "continent": continent,
@@ -46,7 +47,8 @@ def parse_location_coords() -> None:
                     "game": game_code,
                     "x": x,
                     "y": y,
+                    "href": href,
                 }
             )
 
-    utils.write_file(f"{paths.OUTPUT}/locations/location_coords.json", json.dumps(data))
+    utils.write_file(f"{paths.OUTPUT}/locations/locations.json", json.dumps(data))

@@ -29,7 +29,7 @@ class CSV {
             byteArray = Utils.loadByteArray(rez);
             range[0] = Utils.decodeOff64(byteArray, 0, K.META_START_INDEX_SIZE);
             range[1] =
-                range[1] +
+                range[0] +
                 Utils.decodeOff64(
                     byteArray,
                     K.META_START_INDEX_SIZE,
@@ -46,12 +46,6 @@ class CSV {
         return self;
     }
 
-    function bytes() as ByteArray {
-        var start = K.META_SIZE + index * entrySize;
-        var end = start + entrySize;
-        return byteArray.slice(start, end);
-    }
-
     function create() as Entry {
         if (factory != null) {
             return factory.invoke(raw(), offset());
@@ -60,12 +54,19 @@ class CSV {
         }
     }
 
-    function raw() as ByteArray {
+    private function raw() as ByteArray {
         return byteArray;
     }
 
-    function offset() as Number {
-        return K.META_SIZE + (index - range[0]) * entrySize;
+    private function offset() as Number {
+        if (entrySize == 0) {
+            return (
+                Utils.getNthVariablePos(byteArray, index) +
+                K.VARIABLE_LENGTH_SIZE
+            );
+        } else {
+            return K.META_SIZE + (index - range[0]) * entrySize;
+        }
     }
 
     function string() as String {

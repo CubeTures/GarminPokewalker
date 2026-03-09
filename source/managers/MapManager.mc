@@ -42,8 +42,9 @@ module Managers {
                 WatchUi.requestUpdate();
                 return true;
             } else if (state == MAP_STATE_LOCATION) {
-                // TODO push view
-                // display location data
+                var menu = new Views.LocationMenu(getName(), maps[1].index);
+                var delegate = new Delegates.LocationMenuDelegate(menu);
+                WatchUi.pushView(menu, delegate, WatchUi.SLIDE_UP);
                 return true;
             }
 
