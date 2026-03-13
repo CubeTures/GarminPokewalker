@@ -13,6 +13,7 @@ from scripts.locations.gen_locations import (
 from scripts.encounters.encounters import scrape_encounters, sort_encounters_by_stats
 from scripts.encounters.gen_encounters import gen_encounters
 from scripts.dex.gen_dex import gen_dex_names
+from scripts.state.gen_state import gen_state
 
 
 def _parse_args() -> argparse.Namespace:
@@ -86,6 +87,13 @@ def _dex(args: argparse.Namespace):
     print("* Completed dex module")
 
 
+def _state(args: argparse.Namespace):
+    print("* Started state module")
+    gen_state()
+    print("Generated game state")
+    print("* Completed state module")
+
+
 def main():
     args = _parse_args()
     modules: list[tuple[str, Callable[[argparse.Namespace], None]]] = [
@@ -93,6 +101,7 @@ def main():
         ("locations", _locations),
         ("encounters", _encounters),
         ("dex", _dex),
+        ("state", _state),
     ]
 
     if args.all or args.generate:

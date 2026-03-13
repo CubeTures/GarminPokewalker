@@ -3,15 +3,18 @@ using Toybox.System;
 
 module Game {
     function prepareSaveState() as Void {
-        var initialized = Application.Storage.getValue("initialized");
-        if (initialized != null) {
-            return;
-        }
+        // var initialized = Application.Storage.getValue("initialized");
+        // if (initialized != null) {
+        //     return;
+        // }
 
-        var starter = createStarter();
-        System.println("Starter: " + starter.sid);
+        // var starter = createStarter();
+        // System.println("Starter: " + starter.sid);
 
-        // Application.Storage.setValue("initialized", true);
+        Application.Storage.setValue("initialized", true);
+        var gs = new Generated.GameState();
+        gs.setContinent(0);
+        gs.setLocation(0);
     }
 
     function createStarter() as Models.Pokemon {

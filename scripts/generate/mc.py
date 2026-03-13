@@ -19,9 +19,15 @@ def gen_func(
     params: str = "p as Models.Pokemon",
     return_type: str = "ResourceId",
 ) -> str:
-    return f"""\tfunction {name}({params}) as {return_type} {{
+    return f"""\tfunction {name}({params}){f" as {return_type}" if return_type else ""} {{
 {"\n\n".join(blocks)}
     }}"""
+
+
+def gen_class(name: str, blocks: list[str]) -> str:
+    return f"""class {name} {{
+{"\n\n".join(blocks)}
+}}"""
 
 
 def gen_mod(name: str, blocks: list[str]) -> str:

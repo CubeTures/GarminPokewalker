@@ -11,21 +11,38 @@ module Delegates {
         }
 
         function onSelect(item as WatchUi.MenuItem) as Void {
-            if (item.getId() == :location_menu_encounters) {
-                menu.submenu = true;
-                var delegate = new LocationMenuDelegate(menu);
+            if (item.getId() == :location_menu_explore) {
                 WatchUi.pushView(
-                    createEncounterMenu(),
-                    delegate,
+                    new WatchUi.Confirmation("Explore " + menu.name + "?"),
+                    new GenericConfirmationDelegate(method(:explore)),
                     WatchUi.SLIDE_UP
                 );
+            } else if (item.getId() == :location_menu_encounters) {
+                var submenu = createEncounterMenu();
+                if (submenu != null) {
+                    menu.submenu = true;
+                    var delegate = new LocationMenuDelegate(menu);
+                    Managers.pushView(submenu, delegate, WatchUi.SLIDE_UP);
+                }
             }
         }
 
-        function createEncounterMenu() as WatchUi.Menu2 {
+        function explore() as Void {
+            Managers.exploreLocation();
+            WatchUi.popView(WatchUi.SLIDE_UP);
+            WatchUi.popView(WatchUi.SLIDE_UP);
+            WatchUi.popView(WatchUi.SLIDE_UP);
+            // Utils.returnHome();
+        }
+
+        function createEncounterMenu() as WatchUi.Menu2? {
             var encounters =
                 menu.encounters.load(menu.location).create() as
                 Models.Encounter;
+            if (encounters.encounters.size() == 0) {
+                return null;
+            }
+
             var next = new WatchUi.Menu2({ :title => "Encounters" });
 
             for (var i = 0; i < encounters.encounters.size(); i++) {

@@ -14,7 +14,7 @@ class App extends Application.AppBase {
 
     (:typecheck(disableBackgroundCheck))
     function onStart(state as Dictionary?) as Void {
-        // Game.prepareSaveState();
+        Game.prepareSaveState();
     }
 
     (:typecheck(disableBackgroundCheck))
@@ -26,6 +26,8 @@ class App extends Application.AppBase {
     function getInitialView() as [WatchUi.Views] or
         [WatchUi.Views, WatchUi.InputDelegates] {
         Visuals.subScreen = new Visuals.SubScreen();
+        Game.state = new Generated.GameState().load();
+
         var view = new Views.HomeView();
         var delegate = new Delegates.HomeDelegate(view);
         return [view, delegate];

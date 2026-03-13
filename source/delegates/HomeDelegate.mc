@@ -11,7 +11,7 @@ module Delegates {
         }
 
         function onMenu() as Boolean {
-            WatchUi.pushView(
+            Managers.pushView(
                 new Rez.Menus.MainMenu(),
                 new Delegates.MainMenuDelegate(),
                 WatchUi.SLIDE_UP

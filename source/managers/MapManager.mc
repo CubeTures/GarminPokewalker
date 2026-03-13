@@ -2,13 +2,22 @@ import Toybox.Lang;
 using Toybox.Graphics;
 
 module Managers {
+    var mapState as MapManager.MapState = MapManager.MAP_STATE_CONTINENT;
+    var continent as Number = -1;
+    var location as Number = -1;
+
+    function exploreLocation() as Void {
+        mapState = MapManager.MAP_STATE_CONTINENT;
+        Game.state.setContinent(continent);
+        Game.state.setLocation(location);
+    }
+
     class MapManager {
-        private enum MapState {
+        enum MapState {
             MAP_STATE_CONTINENT,
             MAP_STATE_LOCATION,
         }
 
-        private var state as MapState = MAP_STATE_CONTINENT;
         private var maps as [Game.MapState, Game.MapState];
 
         function initialize() {
@@ -27,24 +36,41 @@ module Managers {
                 Generated.numLocationCoords
             );
             maps = [continents, locations];
+
+            if (continent == -1) {
+                continent = Game.state.getContinent();
+            }
+            if (location == -1) {
+                location = Game.state.getLocation();
+            }
+            maps[0].update(continent - maps[0].index);
+            maps[1].update(location - maps[1].index);
         }
 
         function update(offset as Number) as Void {
-            maps[state].update(offset);
+            maps[mapState].update(offset);
             WatchUi.requestUpdate();
         }
 
         function select() as Boolean {
-            if (state == MAP_STATE_CONTINENT) {
-                state = MAP_STATE_LOCATION;
-                maps[1].bounds = getLocationIndexBounds(maps[0].index);
-                maps[1].update(maps[1].bounds[0] - maps[1].index);
+            if (mapState == MAP_STATE_CONTINENT) {
+                mapState = MAP_STATE_LOCATION;
+                if (maps[0].index != continent) {
+                    maps[1].bounds = getLocationIndexBounds(maps[0].index);
+                    maps[1].update(maps[1].bounds[0] - maps[1].index);
+                    continent = maps[0].index;
+                    location = maps[1].index;
+                }
+                if (maps[0].index == Game.state.getContinent()) {
+                    maps[1].update(maps[1].index - Game.state.getLocation());
+                }
                 WatchUi.requestUpdate();
                 return true;
-            } else if (state == MAP_STATE_LOCATION) {
+            } else if (mapState == MAP_STATE_LOCATION) {
+                location = maps[1].index;
                 var menu = new Views.LocationMenu(getName(), maps[1].index);
                 var delegate = new Delegates.LocationMenuDelegate(menu);
-                WatchUi.pushView(menu, delegate, WatchUi.SLIDE_UP);
+                Managers.pushView(menu, delegate, WatchUi.SLIDE_UP);
                 return true;
             }
 
@@ -71,8 +97,8 @@ module Managers {
         }
 
         function back() as Boolean {
-            if (state == MAP_STATE_LOCATION) {
-                state = MAP_STATE_CONTINENT;
+            if (mapState == MAP_STATE_LOCATION) {
+                mapState = MAP_STATE_CONTINENT;
                 WatchUi.requestUpdate();
                 return true;
             }
@@ -81,11 +107,11 @@ module Managers {
         }
 
         function getName() as String {
-            return maps[state].name;
+            return maps[mapState].name;
         }
 
         function draw(dc as Graphics.Dc) as Void {
-            maps[state].draw(dc);
+            maps[mapState].draw(dc);
         }
     }
 }

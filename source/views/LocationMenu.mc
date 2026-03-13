@@ -22,14 +22,6 @@ module Views {
                     {}
                 )
             );
-            Menu2.addItem(
-                new WatchUi.MenuItem(
-                    "Encounters",
-                    null,
-                    :location_menu_encounters,
-                    {}
-                )
-            );
             self.name = name;
             self.location = location;
         }
@@ -38,6 +30,22 @@ module Views {
             if (!submenu) {
                 encounters = new CSV(:loadEncounters, :newEncounter);
                 dexNames = new CSV(:loadDexNames, null);
+
+                var table =
+                    encounters.load(location).create() as Models.Encounter;
+                var subtext = Utils.pluralize(
+                    table.encounters.size(),
+                    "encounter",
+                    "encounters"
+                );
+                Menu2.addItem(
+                    new WatchUi.MenuItem(
+                        "Encounters",
+                        subtext,
+                        :location_menu_encounters,
+                        {}
+                    )
+                );
             } else {
                 submenu = false;
             }
@@ -52,6 +60,8 @@ module Views {
             if (!submenu) {
                 encounters = null;
                 dexNames = null;
+
+                Menu2.deleteItem(Menu2.findItemById(:location_menu_encounters));
             }
         }
     }

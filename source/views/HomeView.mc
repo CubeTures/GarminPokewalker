@@ -60,7 +60,6 @@ module Views {
 
             dc.drawBitmap(0, 85, forest);
             dc.drawBitmap(0, 0, mask);
-            // Visuals.drawGrid(dc);
             var icon = Visuals.loadWeatherIcon();
             Visuals.subScreen.setIcon(icon);
             Visuals.subScreen.draw(dc);
@@ -85,7 +84,7 @@ module Views {
         }
 
         function loadSprites() as Void {
-            System.println("Loading sprite for sid " + pokemon.sid);
+            // System.println("Loading sprite for sid " + pokemon.sid);
             spriteLeft = new Resources.Sprite(pokemon, false);
             spriteRight = new Resources.Sprite(pokemon, true);
         }
