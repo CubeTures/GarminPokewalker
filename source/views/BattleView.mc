@@ -1,6 +1,7 @@
 import Toybox.Lang;
 using Toybox.WatchUi;
 using Toybox.Graphics;
+using Toybox.Math;
 
 module Views {
     class BattleView extends WatchUi.View {
@@ -29,10 +30,47 @@ module Views {
                 :width => 96,
                 :height => 34,
             });
+            updateOption(0);
         }
 
         function select() as Void {
-            // TODO battle
+            var opt = Math.rand() % 3;
+
+            if (option == 0) {
+                if (opt == 0) {
+                    player.takeDamage();
+                    opponent.takeDamage();
+                } else if (opt == 1) {
+                    player.takeDamage();
+                } else {
+                    player.takeDamage();
+                    opponent.takeDamage();
+                    opponent.takeDamage();
+                }
+            } else if (option == 1) {
+                if (opt == 0) {
+                    opponent.takeDamage();
+                } else if (opt == 1) {
+                    // nothing
+                } else {
+                    onFailure();
+                }
+            } else {
+                if (opponent.tryCatch()) {
+                    onCatch();
+                } else {
+                    onFailure();
+                }
+            }
+
+            if (opponent.health == 0) {
+                onWin();
+            }
+
+            System.println(
+                "State: " + player.health + " vs " + opponent.health
+            );
+            WatchUi.requestUpdate();
         }
 
         function updateOption(offset as Number) as Void {
@@ -49,6 +87,8 @@ module Views {
                     text.setText("Catch");
                     break;
             }
+
+            WatchUi.requestUpdate();
         }
 
         function onUpdate(dc as Graphics.Dc) as Void {
@@ -63,8 +103,21 @@ module Views {
             text.draw(dc);
         }
 
+        function onCatch() as Void {
+            text.setText("You caught it!");
+        }
+
+        function onWin() as Void {
+            text.setText("You killed it?");
+        }
+
+        function onFailure() as Void {
+            text.setText("It ran away...");
+        }
+
         (:typecheck(false))
         function onHide() as Void {
+            text.stop();
             text = null;
         }
     }

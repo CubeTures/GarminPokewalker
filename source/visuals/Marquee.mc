@@ -117,9 +117,6 @@ module Visuals {
         function playAnimation() as Void {
             var target = (textWidth - width).toFloat();
             var duration = ((target - offset) / speed);
-            System.println(
-                "Play animation to " + target + " for " + duration + "s"
-            );
 
             WatchUi.animate(
                 self,
@@ -140,6 +137,12 @@ module Visuals {
             offset = 0.0f;
             animating = false;
             WatchUi.requestUpdate();
+        }
+
+        function stop() as Void {
+            pauseTimer.stop();
+            WatchUi.cancelAllAnimations();
+            needsScroll = false;
         }
     }
 }

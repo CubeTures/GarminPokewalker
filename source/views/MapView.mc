@@ -43,7 +43,7 @@ module Views {
         function onHide() {
             View.onHide();
             mapManager = null;
-            WatchUi.cancelAllAnimations();
+            text.stop();
             text = null;
         }
     }

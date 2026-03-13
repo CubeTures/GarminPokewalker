@@ -12,6 +12,12 @@ module Delegates {
                 var view = new Views.MapView();
                 var delegate = new Delegates.MapDelegate(view);
                 WatchUi.pushView(view, delegate, WatchUi.SLIDE_UP);
+            } else if (item.getId() == :main_menu_search) {
+                var player = new Models.SimpleMon();
+                var opponent = new Models.SimpleMon();
+                var view = new Views.BattleView(player, opponent);
+                var delegate = new Delegates.BattleDelegate(view);
+                WatchUi.pushView(view, delegate, WatchUi.SLIDE_UP);   
             }
         }
     }
