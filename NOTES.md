@@ -36,17 +36,13 @@
     - Can use the mint icon as grass patch
     - Or can use random berries as "lure"
 
+- Arrows indicating available actions
 - Continents and Locations have "unlock" conditions
     - Display unlock condition with popup?
         - Toast or confirmation?
-- Use WatchUi.animate instead of frames for marquee
-- Make the map location persistent
-    - Through session
-        - When going back from Location Menu, should be in same spot and start in location map
-        - When going to map, should default to current continent and location
-    - Through boot
-        - Needs to start at current continent and location
-        - Needs to be saved to disk
+- Make custom confirmation message
+    - Scrollable text that isn't cut off by subscreen
+    - Subscreen just shows checkbox or ? with left and right arrow
 
 # Mechanics
 

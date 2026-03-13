@@ -1,34 +1,27 @@
 import Toybox.Lang;
+import Toybox.WatchUi;
 using Toybox.Graphics;
-using Toybox.System;
-using Toybox.Time;
 using Toybox.Timer;
 
 module Visuals {
-    class Marquee {
-        protected var text as String;
+    class Marquee extends WatchUi.Drawable {
         protected var color as Graphics.ColorType;
         protected var backgroundColor as Graphics.ColorType;
         protected var font as Graphics.FontType;
-        protected var locX as Number;
-        protected var locY as Number;
-        protected var width as Number;
-        protected var height as Number;
         protected var speed as Number;
-        protected var pingPong as Boolean;
 
-        private var timer as Timer.Timer;
-        private var move as Boolean = false;
-        private var forward as Boolean = true;
-        private var offset as Number = 0;
+        var offset as Float = 0.0f;
+        protected var text as String = "";
         private var textWidth as Number = 0;
-        private var spaceWidth as Number = 0;
         private var needsScroll as Boolean = false;
         private var measured as Boolean = false;
+        private var pauseTimer as Timer.Timer;
+        private var animating as Boolean = false;
 
         function initialize(
             options as
                 {
+                    :identifier as String,
                     :text as String,
                     :color as Graphics.ColorType,
                     :backgroundColor as Graphics.ColorType,
@@ -38,9 +31,10 @@ module Visuals {
                     :width as Number,
                     :height as Number,
                     :speed as Number,
-                    :pingPong as Boolean,
                 }
         ) {
+            Drawable.initialize(options);
+
             var optText = options.get(:text);
             text = optText != null ? optText : "";
 
@@ -62,117 +56,90 @@ module Visuals {
                     ? optFont as Graphics.FontType
                     : Graphics.FONT_SMALL;
 
-            var optLocX = options.get(:locX);
-            locX = optLocX != null ? optLocX : 0;
-
-            var optLocY = options.get(:locY);
-            locY = optLocY != null ? optLocY : 0;
-
-            var optWidth = options.get(:width);
-            width = optWidth != null ? optWidth : 0;
-
-            var optHeight = options.get(:height);
-            height = optHeight != null ? optHeight : 0;
-
             var optSpeed = options.get(:speed);
-            speed = optSpeed != null ? optSpeed : 2;
+            speed = optSpeed != null ? optSpeed : 40;
 
-            var optPingPong = options.get(:pingPong);
-            pingPong = optPingPong != null ? optPingPong : false;
+            pauseTimer = new Timer.Timer();
+        }
 
-            timer = new Timer.Timer();
+        function getOffset() as Float {
+            return offset;
+        }
+
+        function setOffset(value as Float) as Void {
+            offset = value;
+        }
+
+        function setText(newText as String) as Void {
+            if (text != newText) {
+                pauseTimer.stop();
+                WatchUi.cancelAllAnimations();
+                text = newText;
+                measured = false;
+                offset = 0.0f;
+                animating = false;
+            }
         }
 
         function draw(dc as Graphics.Dc) as Void {
             measureText(dc);
+            var off = offset.toNumber();
+
             dc.setClip(locX, locY, width, height);
             dc.setColor(color, backgroundColor);
             dc.drawText(
-                locX - offset,
+                locX - off,
                 locY,
                 font,
                 text,
                 Graphics.TEXT_JUSTIFY_LEFT
             );
-            if (needsScroll && !pingPong) {
-                dc.drawText(
-                    locX - offset + textWidth + spaceWidth,
-                    locY,
-                    font,
-                    text,
-                    Graphics.TEXT_JUSTIFY_LEFT
-                );
-            }
-            setOffset();
             dc.clearClip();
+
+            if (needsScroll && !animating) {
+                beginningPause();
+            }
         }
 
         private function measureText(dc as Graphics.Dc) as Void {
             if (!measured) {
                 textWidth = dc.getTextWidthInPixels(text, font);
-                if (!pingPong) {
-                    spaceWidth = dc.getTextWidthInPixels("     ", font);
-                }
                 needsScroll = textWidth > width;
                 measured = true;
             }
         }
 
-        private function setOffset() as Void {
-            if (needsScroll && move) {
-                if (pingPong) {
-                    setOffsetPingPong();
-                } else {
-                    setOffsetCycle();
-                }
-            }
+        private function beginningPause() as Void {
+            animating = true;
+            pauseTimer.start(method(:playAnimation), 750, false);
         }
 
-        private function setOffsetPingPong() as Void {
-            if (forward) {
-                if (offset + speed >= textWidth - width) {
-                    offset = textWidth - width;
-                    forward = false;
-                    setTimer();
-                } else {
-                    offset += speed;
-                }
-            } else {
-                if (offset - speed <= 0) {
-                    offset = 0;
-                    forward = true;
-                    setTimer();
-                } else {
-                    offset -= speed;
-                }
-            }
+        function playAnimation() as Void {
+            var target = (textWidth - width).toFloat();
+            var duration = ((target - offset) / speed);
+            System.println(
+                "Play animation to " + target + " for " + duration + "s"
+            );
+
+            WatchUi.animate(
+                self,
+                :offset,
+                WatchUi.ANIM_TYPE_LINEAR,
+                offset,
+                target,
+                duration,
+                method(:endingPause)
+            );
         }
 
-        private function setOffsetCycle() as Void {
-            if (offset + speed >= textWidth + spaceWidth) {
-                offset = 0;
-                setTimer();
-            } else {
-                offset += speed;
-            }
+        function endingPause() as Void {
+            pauseTimer.start(method(:resetAnimation), 750, false);
         }
 
-        function setText(text as String) as Void {
-            if (self.text != text) {
-                self.text = text;
-                measured = false;
-                offset = 0;
-                setTimer();
-            }
-        }
-
-        private function setTimer() as Void {
-            move = false;
-            timer.start(method(:onTimer), 500, false);
-        }
-
-        function onTimer() as Void {
-            move = true;
+        function resetAnimation() as Void {
+            offset = 0.0f;
+            animating = false;
+            WatchUi.requestUpdate();
         }
     }
 }

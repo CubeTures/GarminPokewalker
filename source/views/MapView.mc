@@ -9,8 +9,6 @@ module Views {
         var mapManager as Managers.MapManager;
         (:initialized)
         var text as Visuals.Marquee;
-        (:initialized)
-        var frameClock as Visuals.FrameClock;
 
         function initialize() {
             View.initialize();
@@ -27,7 +25,6 @@ module Views {
                 :width => 96,
                 :height => 34,
             });
-            frameClock = new Visuals.FrameClock(20);
         }
 
         function onUpdate(dc as Graphics.Dc) as Void {
@@ -46,9 +43,8 @@ module Views {
         function onHide() {
             View.onHide();
             mapManager = null;
+            WatchUi.cancelAllAnimations();
             text = null;
-            frameClock.stop();
-            frameClock = null;
         }
     }
 }

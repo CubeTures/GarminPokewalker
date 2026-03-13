@@ -41,7 +41,7 @@ module Visuals {
             }
         }
 
-        function setIcon(icon as Icon) as Void {
+        function setIcon(icon as Icon?) as Void {
             self.icon = icon;
         }
     }
