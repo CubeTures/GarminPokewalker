@@ -22,17 +22,14 @@ module Delegates {
                 if (submenu != null) {
                     menu.submenu = true;
                     var delegate = new LocationMenuDelegate(menu);
-                    Managers.pushView(submenu, delegate, WatchUi.SLIDE_UP);
+                    WatchUi.pushView(submenu, delegate, WatchUi.SLIDE_UP);
                 }
             }
         }
 
         function explore() as Void {
             Managers.exploreLocation();
-            WatchUi.popView(WatchUi.SLIDE_UP);
-            WatchUi.popView(WatchUi.SLIDE_UP);
-            WatchUi.popView(WatchUi.SLIDE_UP);
-            // Utils.returnHome();
+            Utils.popViews(3);
         }
 
         function createEncounterMenu() as WatchUi.Menu2? {

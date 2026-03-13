@@ -11,7 +11,7 @@ module Delegates {
             if (item.getId() == :main_menu_map) {
                 var view = new Views.MapView();
                 var delegate = new Delegates.MapDelegate(view);
-                Managers.pushView(view, delegate, WatchUi.SLIDE_UP);
+                WatchUi.pushView(view, delegate, WatchUi.SLIDE_UP);
             }
         }
     }

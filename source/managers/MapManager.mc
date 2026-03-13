@@ -70,7 +70,7 @@ module Managers {
                 location = maps[1].index;
                 var menu = new Views.LocationMenu(getName(), maps[1].index);
                 var delegate = new Delegates.LocationMenuDelegate(menu);
-                Managers.pushView(menu, delegate, WatchUi.SLIDE_UP);
+                WatchUi.pushView(menu, delegate, WatchUi.SLIDE_UP);
                 return true;
             }
 
