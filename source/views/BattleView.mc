@@ -7,6 +7,8 @@ module Views {
     class BattleView extends WatchUi.View {
         private var player as Models.SimpleMon;
         private var opponent as Models.SimpleMon;
+        private var playerSprite as Resources.Sprite;
+        private var opponentSprite as Resources.Sprite;
 
         private var option as Number = 0;
         (:initialized)
@@ -19,6 +21,14 @@ module Views {
             View.initialize();
             self.player = player;
             self.opponent = opponent;
+            playerSprite = new Resources.Sprite(
+                Models.pokemonFromSimple(player),
+                true
+            );
+            opponentSprite = new Resources.Sprite(
+                Models.pokemonFromSimple(opponent),
+                false
+            );
         }
 
         function onShow() as Void {
@@ -97,9 +107,14 @@ module Views {
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
             dc.clear();
 
+            Visuals.drawGrid(dc);
             Visuals.subScreen.setIcon(null);
             Visuals.subScreen.draw(dc);
 
+            playerSprite.drawSprite(dc, K.POS_1, K.POS_3);
+            opponentSprite.drawSprite(dc, K.POS_5 - K.SPRITE_WIDTH, K.POS_3);
+
+            Visuals.drawTextBox(dc);
             text.draw(dc);
         }
 

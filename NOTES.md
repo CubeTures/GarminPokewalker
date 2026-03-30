@@ -21,6 +21,7 @@
         - `:extendedCode`
         - `--warn --typecheck 3 --optimization 2pz`
 - Smogon Sprites
+    - https://play.pokemonshowdown.com/sprites/
     - https://play.pokemonshowdown.com/sprites/pokemonicons-sheet.png
     - https://github.com/smogon/pokemon-showdown-client/blob/e263055242b6e35cceb5abbfb07f33c588c8131d/play.pokemonshowdown.com/src/battle-dex.ts#L805
     - https://github.com/smogon/pokemon-showdown-client/blob/e263055242b6e35cceb5abbfb07f33c588c8131d/play.pokemonshowdown.com/src/battle-dex-data.ts#L151

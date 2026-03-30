@@ -12,7 +12,6 @@ module Resources {
             loadSprite(p, facingRight);
         }
 
-        // female sprites do not have form nor right versions
         function loadSprite(
             p as Models.Pokemon,
             facingRight as Boolean

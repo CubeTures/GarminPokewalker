@@ -13,6 +13,9 @@ module K {
         POS_6 = 175,
     }
 
+    const SPRITE_WIDTH = 42;
+    const SPRITE_HEIGHT = 32;
+
     const META_START_INDEX_SIZE = 2;
     const META_NUM_ENTRIES_SIZE = 2;
     const META_ENTRY_LEN_SIZE = 2;

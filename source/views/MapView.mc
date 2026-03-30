@@ -33,8 +33,7 @@ module Views {
             dc.clear();
             mapManager.draw(dc);
             Visuals.subScreen.draw(dc);
-            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-            dc.fillRectangle(0, 142, 176, 34);
+            Visuals.drawTextBox(dc);
             text.setText(mapManager.getName());
             text.draw(dc);
         }

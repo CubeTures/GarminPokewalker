@@ -2,6 +2,7 @@ import os
 from typing import Callable
 
 import cv2
+from PIL import Image
 from cv2.typing import MatLike
 import numpy as np
 import numpy.typing as npt
@@ -146,6 +147,35 @@ def median_pixel_redraw_details(
     return binary
 
 
+def add_white_outline(input_path: str, output_path: str, thickness: int = 1) -> None:
+    img = Image.open(input_path).convert("RGBA")
+    arr = np.array(img)
+
+    alpha = arr[:, :, 3]
+    opaque = alpha > 0
+    kernel_offsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    neighbor_mask = np.zeros_like(opaque)
+
+    for dy, dx in kernel_offsets:
+        shifted = np.roll(np.roll(opaque, dy, axis=0), dx, axis=1)
+        if dy < 0:
+            shifted[dy:, :] = False
+        elif dy > 0:
+            shifted[:dy, :] = False
+        if dx < 0:
+            shifted[:, dx:] = False
+        elif dx > 0:
+            shifted[:, :dx] = False
+        neighbor_mask |= shifted
+
+    outline_mask = neighbor_mask & ~opaque
+
+    result = arr.copy()
+    result[outline_mask] = [255, 255, 255, 255]
+
+    Image.fromarray(result, "RGBA").save(output_path)
+
+
 def recolor_sprites():
     output_path = f"{paths.OUTPUT}/recolor/"
     os.makedirs(output_path, exist_ok=True)
@@ -155,4 +185,4 @@ def recolor_sprites():
         inp: str = spr.get_path()
         outp: str = f"{output_path}{spr.get_target()}.png"
         process_image(inp, outp, spr.reflect, median_pixel_redraw_details)
-        # TODO: white outline
+        add_white_outline(outp, outp)
